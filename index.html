@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>British Empire – Cinematic GFS Presentation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg: #050608;
+      --overlay: rgba(5, 6, 10, 0.7); /* ~70% */
+      --accent-gold: #f1c453;
+      --accent-red: #e63946;
+      --accent-blue: #1d3557;
+      --text-main: #f8f9fa;
+      --text-muted: #cfd2da;
+      --radius-pill: 999px;
+      --transition: 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", Roboto, sans-serif;
+      background: radial-gradient(circle at top, #111827 0, #020308 55%, #000 100%);
+      color: var(--text-main);
+      overflow: hidden;
+    }
+
+    .deck {
+      position: relative;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      background: #000;
+    }
+
+    /* Background image per slide */
+    .slide-bg {
+      position: absolute;
+      inset: 0;
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      filter: saturate(1.15) contrast(1.1);
+      transform: scale(1.04);
+      transform-origin: center;
+      transition: opacity var(--transition), transform 1.2s ease-out;
+      opacity: 0;
+    }
+
+    .slide-bg.active {
+      opacity: 1;
+      transform: scale(1.02);
+    }
+
+    .vignette {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top, rgba(0, 0, 0, 0.4) 0, transparent 40%),
+        radial-gradient(circle at bottom, rgba(0, 0, 0, 0.6) 0, transparent 40%),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.9));
+      pointer-events: none;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(0, 0, 0, 0.85) 0%,
+        var(--overlay) 40%,
+        rgba(0, 0, 0, 0.85) 100%
+      );
+      display: flex;
+      flex-direction: column;
+      padding: 18px 20px 16px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 8px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      background: conic-gradient(from 210deg, #e63946, #f1c453, #457b9d, #e63946);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+    }
+
+    .brand-mark span {
+      font-weight: 800;
+      font-size: 18px;
+      color: #fff;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .brand-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .tag-pill {
+      border-radius: var(--radius-pill);
+      padding: 6px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: radial-gradient(circle at top left, rgba(241, 196, 83, 0.2), rgba(5, 7, 15, 0.9));
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .tag-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #2ecc71;
+      box-shadow: 0 0 10px rgba(46, 204, 113, 0.9);
+    }
+
+    .content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 0;
+    }
+
+    .slide {
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;
+      display: none;
+      opacity: 0;
+      transform: translateX(18px) translateY(6px);
+      transition: opacity var(--transition), transform var(--transition);
+    }
+
+    .slide.active {
+      display: block;
+      opacity: 1;
+      transform: translateX(0) translateY(0);
+    }
+
+    .kicker {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--accent-gold);
+      margin-bottom: 8px;
+    }
+
+    h1, h2 {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Display",
+        "Segoe UI", sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: clamp(34px, 5vw, 54px);
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-size: clamp(30px, 4vw, 44px);
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--text-muted);
+      max-width: 720px;
+      line-height: 1.6;
+      margin-bottom: 26px;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 26px;
+    }
+
+    .one-col {
+      max-width: 780px;
+    }
+
+    .panel {
+      background: rgba(7, 9, 18, 0.85);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 14px 16px 14px;
+      backdrop-filter: blur(12px);
+    }
+
+    .panel-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    ul {
+      list-style: none;
+      margin-top: 8px;
+    }
+
+    ul li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 6px;
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    ul li::before {
+      content: "•";
+      color: var(--accent-gold);
+      margin-top: 1px;
+      font-size: 18px;
+    }
+
+    .highlight {
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .pill {
+      font-size: 12px;
+      padding: 6px 11px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: var(--text-main);
+      background: rgba(3, 5, 14, 0.9);
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .pill span.icon {
+      font-size: 13px;
+    }
+
+    .reflection {
+      margin-top: 12px;
+      border-radius: 16px;
+      border: 1px dashed rgba(241, 196, 83, 0.9);
+      padding: 10px 12px;
+      font-size: 14px;
+      color: var(--text-muted);
+      background: rgba(3, 6, 16, 0.9);
+    }
+
+    .reflection strong {
+      color: #fff;
+    }
+
+    .speaker-notes {
+      margin-top: 14px;
+      font-size: 11px;
+      color: var(--text-muted);
+      opacity: 0.9;
+    }
+
+    .speaker-label {
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 10px;
+      margin-bottom: 2px;
+      color: rgba(206, 212, 218, 0.8);
+    }
+
+    .speaker-notes p {
+      margin-bottom: 2px;
+    }
+
+    .quiz-question {
+      font-size: 16px;
+      color: var(--text-main);
+      margin-bottom: 10px;
+    }
+
+    .quiz-option {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+      padding: 9px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(4, 6, 16, 0.9);
+      cursor: pointer;
+      transition: background 0.25s ease-out, border-color 0.25s ease-out,
+        transform 0.2s ease-out;
+      font-size: 14px;
+    }
+
+    .quiz-option:hover {
+      transform: translateY(-1px);
+      background: rgba(10, 14, 30, 0.95);
+    }
+
+    .quiz-option span.label {
+      font-weight: 500;
+      color: #ffffff;
+    }
+
+    .quiz-option span.feedback {
+      font-size: 12px;
+      color: var(--text-muted);
+      opacity: 0;
+      transform: translateY(2px);
+      transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+    }
+
+    .quiz-option.correct {
+      border-color: #2ecc71;
+      background: linear-gradient(135deg, rgba(46, 204, 113, 0.22), rgba(4, 7, 20, 0.96));
+    }
+
+    .quiz-option.incorrect {
+      border-color: #e63946;
+      background: linear-gradient(135deg, rgba(230, 57, 70, 0.2), rgba(4, 7, 20, 0.96));
+    }
+
+    .quiz-option.show-feedback span.feedback {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Navigation bar */
+    .nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-top: 6px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      border-radius: var(--radius-pill);
+      padding: 8px 16px;
+      font-size: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: radial-gradient(circle at top, rgba(241, 196, 83, 0.3), rgba(4, 7, 16, 0.98));
+      color: var(--text-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      min-width: 104px;
+      justify-content: center;
+      transition: background 0.2s ease-out, transform 0.15s ease-out,
+        box-shadow 0.2s ease-out;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.7);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn-secondary {
+      background: rgba(3, 5, 14, 0.96);
+      border-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.65);
+    }
+
+    .btn:active {
+      transform: translateY(1px) scale(0.99);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.8);
+    }
+
+    .btn:disabled {
+      opacity: 0.4;
+      cursor: default;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .btn span.icon {
+      font-size: 14px;
+    }
+
+    .progress {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--text-muted);
+      justify-content: flex-end;
+    }
+
+    .progress-bar-bg {
+      width: 120px;
+      height: 6px;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.15);
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: var(--radius-pill);
+      background: linear-gradient(90deg, var(--accent-gold), var(--accent-red));
+      transition: width 0.3s ease-out;
+    }
+
+    .progress-label {
+      min-width: 82px;
+      text-align: right;
+    }
+
+    @media (max-width: 900px) {
+      .overlay {
+        padding: 14px 12px 10px;
+      }
+      .two-col {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .slide {
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 640px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+      }
+      .nav-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .progress {
+        justify-content: space-between;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="deck" aria-label="Cinematic British Empire Presentation">
+    <!-- Backgrounds for each slide (match data-slide) -->
+    <div class="slide-bg active" data-slide-bg="1"
+      style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/9/96/The_British_Empire.png');">
+    </div>
+    <div class="slide-bg" data-slide-bg="2"
+      style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/0/0e/British_Empire_1914.png');">
+    </div>
+    <div class="slide-bg" data-slide-bg="3"
+      style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/8/86/EastIndiaman.jpg');">
+    </div>
+    <div class="slide-bg" data-slide-bg="4"
+      style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/0/02/Africa_1914_map.png');">
+    </div>
+    <div class="slide-bg" data-slide-bg="5"
+      style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/3/3c/Indian_troops_in_France_during_WWI.jpg');">
+    </div>
+    <div class="slide-bg" data-slide-bg="6"
+      style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/0/0b/Queen_Victoria_by_Bassano.jpg');">
+    </div>
+    <div class="slide-bg" data-slide-bg="7"
+      style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/5/5e/Suez_Canal%2C_1869.jpg');">
+    </div>
+    <div class="slide-bg" data-slide-bg="8"
+      style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/4/4b/Flag_of_India_%281947-1950%29.svg');">
+    </div>
+    <div class="slide-bg" data-slide-bg="9"
+      style="background-image:url('https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg');">
+    </div>
+    <div class="slide-bg" data-slide-bg="10"
+      style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/9/96/The_British_Empire.png');">
+    </div>
+    <div class="slide-bg" data-slide-bg="11"
+      style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/3/3c/Indian_troops_in_France_during_WWI.jpg');">
+    </div>
+    <div class="slide-bg" data-slide-bg="12"
+      style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/0/0e/British_Empire_1914.png');">
+    </div>
+    <div class="slide-bg" data-slide-bg="13"
+      style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/4/4b/Flag_of_India_%281947-1950%29.svg');">
+    </div>
+    <div class="slide-bg" data-slide-bg="14"
+      style="background-image:url('https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg');">
+    </div>
+
+    <div class="vignette"></div>
+
+    <div class="overlay">
+      <header>
+        <div class="brand">
+          <div class="brand-mark"><span>BE</span></div>
+          <div class="brand-text">
+            <div class="brand-title">British Empire</div>
+            <div class="brand-subtitle">GFS · English · ~15 minutes</div>
+          </div>
+        </div>
+        <div class="tag-pill">
+          <span class="tag-dot"></span>
+          <span>Cinematic · Touch-friendly · Interactive</span>
+        </div>
+      </header>
+
+      <main class="content">
+        <!-- Slide 1: Title -->
+        <section class="slide active" data-slide="1">
+          <div class="one-col">
+            <div class="kicker">GFS · English</div>
+            <h1>The British Empire</h1>
+            <p class="subtitle">
+              How a small island kingdom built the largest empire in history – and how its power, violence and legacy still shape our world today.
+            </p>
+            <div class="panel">
+              <div class="panel-title">Today’s journey</div>
+              <ul>
+                <li><span class="highlight">What</span> was the British Empire?</li>
+                <li><span class="highlight">How</span> did it expand across the globe?</li>
+                <li><span class="highlight">Which benefits</span> did it bring – and at what human cost?</li>
+                <li><span class="highlight">Why</span> did it decline after the World Wars?</li>
+                <li><span class="highlight">Which legacies</span> can we still feel today?</li>
+              </ul>
+              <div class="pill-row">
+                <div class="pill"><span class="icon">🎬</span>Cinematic overview</div>
+                <div class="pill"><span class="icon">⚖️</span>Critical & balanced</div>
+                <div class="pill"><span class="icon">❓</span>Interactive questions</div>
+              </div>
+            </div>
+            <div class="speaker-notes">
+              <div class="speaker-label">Speaker notes</div>
+              <p>Introduce yourself and the topic in one or two sentences.</p>
+              <p>Emphasise that this is not just about power and maps, but also about people, conflicts and long-term consequences.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 2: Definition -->
+        <section class="slide" data-slide="2">
+          <div class="one-col">
+            <div class="kicker">Basics</div>
+            <h2>What was the British Empire?</h2>
+            <p class="subtitle">
+              The British Empire was a global system of colonies, dominions and territories controlled from London –
+              for more than 400 years, it connected very different parts of the world under British rule.
+            </p>
+            <div class="panel">
+              <div class="panel-title">Key facts</div>
+              <ul>
+                <li>Timeline: from the late 16th century to the late 20th century.</li>
+                <li>At its height, it ruled over about a quarter of the world’s land area and population.</li>
+                <li>Included territories in the Americas, Africa, Asia, the Middle East and the Pacific.</li>
+              </ul>
+              <div class="pill-row">
+                <div class="pill"><span class="icon">🌍</span>Largest empire in history</div>
+                <div class="pill"><span class="icon">👑</span>Monarchy at the centre</div>
+                <div class="pill"><span class="icon">⚙️</span>Power, trade & control</div>
+              </div>
+            </div>
+            <div class="speaker-notes">
+              <div class="speaker-label">Speaker notes</div>
+              <p>Give one clear, simple definition in your own words, based on the bullet points.</p>
+              <p>You can already mention the famous phrase “the empire on which the sun never set”.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 3: Expansion over time -->
+        <section class="slide" data-slide="3">
+          <div class="one-col">
+            <div class="kicker">Expansion</div>
+            <h2>How did the empire grow?</h2>
+            <p class="subtitle">
+              Over several centuries, Britain expanded its influence through exploration, trade, military force and diplomacy –
+              often combining economic interests with political control.
+            </p>
+            <div class="panel">
+              <div class="panel-title">Very rough timeline</div>
+              <ul>
+                <li><span class="highlight">Early phase (1500s–1700s):</span> first colonies in Ireland and North America; trading companies like the East India Company begin.</li>
+                <li><span class="highlight">Asian & Indian focus (1700s–1800s):</span> Britain gains control over large parts of India and key ports in Asia.</li>
+                <li><span class="highlight">“Scramble for Africa” (late 1800s):</span> European powers divide Africa; Britain controls territories from Egypt to South Africa.</li>
+                <li><span class="highlight">Decline & decolonisation (after 1945):</span> independence movements rise, many colonies become independent states.</li>
+              </ul>
+            </div>
+            <div class="speaker-notes">
+              <div class="speaker-label">Speaker notes</div>
+              <p>Do not read every detail – instead, walk the class quickly through the main phases.</p>
+              <p>Underline that trade and strategic ports were just as important as military power.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 4: At its height -->
+        <section class="slide" data-slide="4">
+          <div class="two-col">
+            <div>
+              <div class="kicker">Peak power</div>
+              <h2>“The sun never sets”</h2>
+              <p class="subtitle">
+                Around 1920, the British Empire reached its greatest size –
+                controlling territories on every inhabited continent.
+              </p>
+              <div class="panel">
+                <div class="panel-title">What this meant</div>
+                <ul>
+                  <li>Territories in Canada, the Caribbean, large parts of Africa and the Pacific.</li>
+                  <li>Control of India, Australia, New Zealand and key regions in the Middle East.</li>
+                  <li>Strategic routes: Suez Canal, Singapore, Hong Kong, Cape Town and more.</li>
+                </ul>
+                <div class="reflection">
+                  <strong>Think:</strong> If one empire controls so many routes and resources –
+                  how does that affect global trade and politics?
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="panel">
+                <div class="panel-title">Interactive question</div>
+                <div class="quiz-question">
+                  When people said “the sun never sets on the British Empire”, what did they want to express?
+                </div>
+                <div class="quiz-option" data-question="sun" data-correct="false">
+                  <span class="label">A) That Britain controlled only European countries.</span>
+                  <span class="feedback">Not quite – the phrase is about a global empire, not just Europe.</span>
+                </div>
+                <div class="quiz-option" data-question="sun" data-correct="true">
+                  <span class="label">B) That it was always daytime somewhere in its territories.</span>
+                  <span class="feedback">Exactly – it shows the global reach and ambition of the empire.</span>
+                </div>
+                <div class="quiz-option" data-question="sun" data-correct="false">
+                  <span class="label">C) That Britain could control the weather.</span>
+                  <span class="feedback">Funny idea – but no, this is metaphorical, not scientific.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 5: Life in the empire -->
+        <section class="slide" data-slide="5">
+          <div class="two-col">
+            <div>
+              <div class="kicker">Perspectives</div>
+              <h2>What did life in the empire mean?</h2>
+              <p class="subtitle">
+                Experiences were very different – depending on whether you were a British settler, a local ruler,
+                a worker, an enslaved person or part of a resistance movement.
+              </p>
+              <div class="panel">
+                <div class="panel-title">Positions of power</div>
+                <ul>
+                  <li>British officials and settlers usually had more rights and economic advantages.</li>
+                  <li>Some local elites cooperated with the empire to keep or increase their power.</li>
+                  <li>For some people, the empire offered access to education, trade or new careers.</li>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <div class="panel">
+                <div class="panel-title">Perspectives from below</div>
+                <ul>
+                  <li>Many communities lost land, resources and political influence.</li>
+                  <li>Enslavement, forced labour and racial discrimination were part of the system.</li>
+                  <li>Resistance and uprisings appeared in many regions, from India to Africa and the Caribbean.</li>
+                </ul>
+              </div>
+              <div class="reflection">
+                <strong>Question:</strong> If we only read sources written by British officials –
+                whose voices are missing from the story?
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 6: Benefits & costs -->
+        <section class="slide" data-slide="6">
+          <div class="two-col">
+            <div>
+              <div class="kicker">Ambivalence</div>
+              <h2>Benefits – and at what cost?</h2>
+              <p class="subtitle">
+                The British Empire built infrastructure and spread ideas – but these developments often served imperial interests
+                more than local populations.
+              </p>
+              <div class="panel">
+                <div class="panel-title">Often-mentioned “benefits”</div>
+                <ul>
+                  <li>Railways, ports and telegraphs connected regions and made trade faster.</li>
+                  <li>English spread as a global language, which today helps in communication and business.</li>
+                  <li>Legal and parliamentary systems were introduced in some colonies.</li>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <div class="panel">
+                <div class="panel-title">High human costs</div>
+                <ul>
+                  <li>Economic structures often forced colonies to export raw materials and import British goods.</li>
+                  <li>Violent suppression of uprisings, unequal rights and long-term social divisions.</li>
+                  <li>Racist ideologies were used to justify domination and unequal treatment.</li>
+                </ul>
+                <div class="reflection">
+                  <strong>Critical thought:</strong> When someone talks about the “good sides” of the empire – always ask:
+                  benefits for whom, and who paid the price?
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 7: World wars & decolonisation -->
+        <section class="slide" data-slide="7">
+          <div class="two-col">
+            <div>
+              <div class="kicker">Turning point</div>
+              <h2>World Wars and the end of the empire</h2>
+              <p class="subtitle">
+                The two World Wars weakened Britain economically and politically –
+                and at the same time, they strengthened independence movements in the colonies.
+              </p>
+              <div class="panel">
+                <div class="panel-title">After 1918 & 1945</div>
+                <ul>
+                  <li>Britain depended heavily on soldiers and resources from its colonies.</li>
+                  <li>After 1945, Britain was economically exhausted; the USA and USSR became the main superpowers.</li>
+                  <li>Anti-colonial movements grew stronger and demanded self-determination.</li>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <div class="panel">
+                <div class="panel-title">Key example: India</div>
+                <ul>
+                  <li>India was often called the “jewel in the crown” of the British Empire.</li>
+                  <li>After long struggles and campaigns (for example, Gandhi), India became independent in 1947.</li>
+                  <li>This independence inspired many other colonies in Asia and Africa.</li>
+                </ul>
+              </div>
+              <div class="speaker-notes">
+                <div class="speaker-label">Speaker notes</div>
+                <p>Make clear that decolonisation was not a “gift” from Britain – it was the result of strong and long resistance.</p>
+                <p>You can briefly mention that independence was often connected with violence and difficult transitions.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 8: Legacy today (politics & borders) -->
+        <section class="slide" data-slide="8">
+          <div class="one-col">
+            <div class="kicker">Legacy</div>
+            <h2>How does the empire still matter today?</h2>
+            <p class="subtitle">
+              Even though the British Empire ended as a formal political structure, its consequences are still visible in borders,
+              politics, language and culture.
+            </p>
+            <div class="panel">
+              <div class="panel-title">Politics & borders</div>
+              <ul>
+                <li>Many borders in Africa and the Middle East were drawn during colonial times, often without respecting local realities.</li>
+                <li>These borders can still cause conflicts and tensions today.</li>
+                <li>Institutions in former colonies – parliaments, legal systems – often follow British models.</li>
+              </ul>
+            </div>
+            <div class="speaker-notes">
+              <div class="speaker-label">Speaker notes</div>
+              <p>Connect the historical maps to modern news: conflicts, debates about borders and political systems.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 9: Legacy – language & culture -->
+        <section class="slide" data-slide="9">
+          <div class="two-col">
+            <div>
+              <div class="kicker">Legacy</div>
+              <h2>Language and culture</h2>
+              <p class="subtitle">
+                The empire also left deep cultural traces – some people see them as opportunities,
+                others as reminders of domination.
+              </p>
+              <div class="panel">
+                <div class="panel-title">English as a world language</div>
+                <ul>
+                  <li>English spread globally through empire and later through globalisation.</li>
+                  <li>Today it is a key language in business, diplomacy, science and pop culture.</li>
+                  <li>This can open doors – but it also raises questions about power and which languages are valued.</li>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <div class="panel">
+                <div class="panel-title">Cultural influence</div>
+                <ul>
+                  <li>Sports like cricket and football, legal ideas and school systems spread around the world.</li>
+                  <li>At the same time, many indigenous languages and traditions were suppressed.</li>
+                  <li>Today, people in many countries are trying to recover and strengthen local cultures.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 10: Memory & debates -->
+        <section class="slide" data-slide="10">
+          <div class="one-col">
+            <div class="kicker">Memory</div>
+            <h2>How should we remember the British Empire?</h2>
+            <p class="subtitle">
+              In Britain and in former colonies, people still disagree on how to talk about the empire –
+              in museums, in schools and in public spaces.
+            </p>
+            <div class="panel">
+              <div class="panel-title">Debates today</div>
+              <ul>
+                <li>Some people focus on achievements like trade, technology and global connections.</li>
+                <li>Others highlight violence, racism, slavery and the destruction of cultures.</li>
+                <li>Movements question statues, street names and symbols that celebrate colonial figures.</li>
+              </ul>
+              <div class="reflection">
+                <strong>Question to the class:</strong> Should countries publicly apologise or pay reparations for colonial injustices – and why (or why not)?
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 11: Interactive quiz -->
+        <section class="slide" data-slide="11">
+          <div class="two-col">
+            <div>
+              <div class="kicker">Check-in</div>
+              <h2>Quick quiz – Part 1</h2>
+              <p class="subtitle">
+                Let’s see what you remember – choose the best answer and we’ll briefly discuss it.
+              </p>
+              <div class="panel">
+                <div class="panel-title">Question 1</div>
+                <div class="quiz-question">
+                  Around which time did the British Empire reach its greatest territorial extent?
+                </div>
+                <div class="quiz-option" data-question="q1" data-correct="false">
+                  <span class="label">A) Around 1700</span>
+                  <span class="feedback">Not yet – many African and Pacific territories were added later.</span>
+                </div>
+                <div class="quiz-option" data-question="q1" data-correct="true">
+                  <span class="label">B) Around 1920</span>
+                  <span class="feedback">Correct – after World War I, the empire was at its largest.</span>
+                </div>
+                <div class="quiz-option" data-question="q1" data-correct="false">
+                  <span class="label">C) After 1980</span>
+                  <span class="feedback">By then, most former colonies had already become independent.</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="panel">
+                <div class="panel-title">Question 2</div>
+                <div class="quiz-question">
+                  Which statement about decolonisation is most accurate?
+                </div>
+                <div class="quiz-option" data-question="q2" data-correct="false">
+                  <span class="label">A) Britain simply decided to give independence for moral reasons.</span>
+                  <span class="feedback">Too simple – resistance and global politics played a huge role.</span>
+                </div>
+                <div class="quiz-option" data-question="q2" data-correct="true">
+                  <span class="label">B) Independence came through a mix of local struggles, world politics and Britain’s weakened position.</span>
+                  <span class="feedback">Exactly – decolonisation was complex and often conflictual.</span>
+                </div>
+                <div class="quiz-option" data-question="q2" data-correct="false">
+                  <span class="label">C) Most colonies are still part of the British Empire today.</span>
+                  <span class="feedback">No – the formal empire ended, although some territories remain under British control.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 12: Quiz – perspectives -->
+        <section class="slide" data-slide="12">
+          <div class="one-col">
+            <div class="kicker">Check-in</div>
+            <h2>Quick quiz – Part 2</h2>
+            <p class="subtitle">
+              Now let’s focus on perspectives and legacies – again, choose the best answer.
+            </p>
+            <div class="panel">
+              <div class="panel-title">Question 3</div>
+              <div class="quiz-question">
+                Why is it important to include perspectives from colonised people when we talk about the British Empire?
+              </div>
+              <div class="quiz-option" data-question="q3" data-correct="true">
+                <span class="label">A) Because they show how empire affected everyday life, not just politics in London.</span>
+                <span class="feedback">Yes – without these voices we get a one-sided and incomplete story.</span>
+              </div>
+              <div class="quiz-option" data-question="q3" data-correct="false">
+                <span class="label">B) Because British politicians never wrote anything down.</span>
+                <span class="feedback">No – there are many sources from London, but we need more than that.</span>
+              </div>
+              <div class="quiz-option" data-question="q3" data-correct="false">
+                <span class="label">C) Because dates and facts are not important at all.</span>
+                <span class="feedback">Dates and facts matter – but they need context and human experiences.</span>
+              </div>
+            </div>
+            <div class="speaker-notes">
+              <div class="speaker-label">Speaker notes</div>
+              <p>Use this question to underline your main message: history is about power, but also about voices.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 13: Summary -->
+        <section class="slide" data-slide="13">
+          <div class="one-col">
+            <div class="kicker">Wrap-up</div>
+            <h2>What should you remember?</h2>
+            <p class="subtitle">
+              The British Empire is not just a story of maps and dates – it is a story of power, inequality, resistance and long-lasting consequences.
+            </p>
+            <div class="panel">
+              <div class="panel-title">Three key points</div>
+              <ul>
+                <li>The British Empire was the largest empire in history and deeply shaped global politics and economics.</li>
+                <li>Its history combines trade, infrastructure and cooperation with oppression, racism and violence.</li>
+                <li>Debates about the empire today are debates about justice, memory and identity – in Britain and around the world.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 14: Final reflection -->
+        <section class="slide" data-slide="14">
+          <div class="one-col">
+            <div class="kicker">Final thought</div>
+            <h2>History, responsibility and the future</h2>
+            <p class="subtitle">
+              We cannot change the past – but we can decide how we talk about it and what we do with its consequences.
+            </p>
+            <div class="panel">
+              <div class="panel-title">Open question</div>
+              <div class="reflection">
+                <strong>To think about:</strong><br />
+                How should former empires and former colonies work together today,
+                if they share a history that includes both connection and injustice?
+              </div>
+              <div class="speaker-notes">
+                <div class="speaker-label">Speaker notes</div>
+                <p>End with a strong, calm sentence that connects the British Empire to global questions of justice today.</p>
+                <p>Then thank the class and the teacher for listening.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <div class="nav-bar">
+        <div class="nav-buttons">
+          <button class="btn btn-secondary" id="prevBtn">
+            <span class="icon">←</span>
+            <span>Previous</span>
+          </button>
+          <button class="btn" id="nextBtn">
+            <span>Next</span>
+            <span class="icon">→</span>
+          </button>
+        </div>
+        <div class="progress" aria-label="Slide progress">
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progressBar"></div>
+          </div>
+          <div class="progress-label" id="progressLabel">Slide 1 / 14</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const slides = Array.from(document.querySelectorAll(".slide"));
+    const bgs = Array.from(document.querySelectorAll(".slide-bg"));
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const progressBar = document.getElementById("progressBar");
+    const progressLabel = document.getElementById("progressLabel");
+
+    let currentSlideIndex = 0;
+
+    function updateSlides() {
+      slides.forEach((slide, index) => {
+        slide.classList.toggle("active", index === currentSlideIndex);
+      });
+
+      bgs.forEach((bg, index) => {
+        bg.classList.toggle("active", index === currentSlideIndex);
+      });
+
+      const total = slides.length;
+      const current = currentSlideIndex + 1;
+      const percentage = (current / total) * 100;
+      progressBar.style.width = percentage + "%";
+      progressLabel.textContent = `Slide ${current} / ${total}`;
+
+      prevBtn.disabled = currentSlideIndex === 0;
+      nextBtn.disabled = currentSlideIndex === total - 1;
+    }
+
+    function goToNextSlide() {
+      if (currentSlideIndex < slides.length - 1) {
+        currentSlideIndex++;
+        updateSlides();
+      }
+    }
+
+    function goToPrevSlide() {
+      if (currentSlideIndex > 0) {
+        currentSlideIndex--;
+        updateSlides();
+      }
+    }
+
+    prevBtn.addEventListener("click", goToPrevSlide);
+    nextBtn.addEventListener("click", goToNextSlide);
+
+    // Swipe support
+    let touchStartX = null;
+    let touchEndX = null;
+
+    function handleTouchStart(event) {
+      touchStartX = event.changedTouches[0].screenX;
+    }
+
+    function handleTouchEnd(event) {
+      touchEndX = event.changedTouches[0].screenX;
+      handleGesture();
+    }
+
+    function handleGesture() {
+      if (touchStartX === null || touchEndX === null) return;
+      const diff = touchEndX - touchStartX;
+      if (Math.abs(diff) > 50) {
+        if (diff < 0) {
+          goToNextSlide();
+        } else {
+          goToPrevSlide();
+        }
+      }
+      touchStartX = null;
+      touchEndX = null;
+    }
+
+    document.querySelector(".deck").addEventListener("touchstart", handleTouchStart, { passive: true });
+    document.querySelector(".deck").addEventListener("touchend", handleTouchEnd, { passive: true });
+
+    // Quiz interactivity
+    const quizOptions = document.querySelectorAll(".quiz-option");
+
+    quizOptions.forEach((option) => {
+      option.addEventListener("click", () => {
+        const questionId = option.getAttribute("data-question");
+        const isCorrect = option.getAttribute("data-correct") === "true";
+
+        quizOptions.forEach((opt) => {
+          if (opt.getAttribute("data-question") === questionId) {
+            opt.classList.remove("correct", "incorrect", "show-feedback");
+          }
+        });
+
+        option.classList.add(isCorrect ? "correct" : "incorrect");
+        option.classList.add("show-feedback");
+      });
+    });
+
+    updateSlides();
+  </script>
+</body>
+</html>
