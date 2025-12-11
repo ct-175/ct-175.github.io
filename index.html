@@ -2,13 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>History of the UK</title>
+<title>History of Modern UK</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 <style>
     body {
         margin: 0;
         padding: 0;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #f0f4f8;
+        font-family: 'Montserrat', sans-serif;
+        background-color: #1f2937;
+        color: #f9fafb;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -17,29 +19,37 @@
         width: 90%;
         height: 85vh;
         margin: 20px 0;
-        background: linear-gradient(135deg, #ffffff, #e0e7ff);
+        background: linear-gradient(135deg, #111827, #1e293b);
         border-radius: 15px;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         padding: 40px;
         display: none;
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
         overflow-y: auto;
+        transition: all 0.5s ease;
     }
     .active { display: flex; }
     h1 {
-        color: #1e3a8a;
-        margin-bottom: 20px;
+        color: #fbbf24;
+        margin-bottom: 15px;
+        font-size: 2.5em;
     }
-    h2 { color: #2563eb; margin-bottom: 15px; }
+    h2 {
+        color: #3b82f6;
+        margin-bottom: 10px;
+        font-size: 1.8em;
+    }
     p {
         font-size: 18px;
-        line-height: 1.5;
+        line-height: 1.6;
         margin-bottom: 15px;
-        color: #1f2937;
     }
-    ul { margin-left: 20px; margin-bottom: 20px; }
+    ul {
+        margin-left: 20px;
+        margin-bottom: 20px;
+    }
     li { margin-bottom: 10px; }
     button {
         margin: 10px 5px 0 0;
@@ -62,108 +72,101 @@
     .image-placeholder {
         width: 100%;
         height: 200px;
-        background-color: #c7d2fe;
+        background-color: #374151;
         border-radius: 10px;
         margin-bottom: 20px;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #1e40af;
+        color: #fbbf24;
         font-size: 18px;
     }
 </style>
 </head>
 <body>
 
-<!-- Slide 1 -->
+<!-- Slide 1: Title -->
 <div class="slide active">
-    <h1>History of the United Kingdom</h1>
-    <div class="image-placeholder">[Image Placeholder]</div>
-    <p>Welcome to this presentation! We will explore the major historical periods of the UK, from early settlements to modern times.</p>
-    <p>Use the "Next" button to navigate through the slides.</p>
+    <h1>History of Modern UK</h1>
+    <div class="image-placeholder">[UK Modern Image]</div>
+    <p>Focus on the Industrial Revolution, modernization, and the UK's development into a modern state.</p>
 </div>
 
-<!-- Slide 2 -->
+<!-- Slide 2: Industrial Revolution -->
 <div class="slide">
-    <h1>Early Settlements</h1>
-    <p>Humans have lived in Britain for thousands of years. Key periods:</p>
-    <ul>
-        <li>Stone Age – first tools and hunter-gatherers</li>
-        <li>Bronze Age – metal tools and early farming</li>
-        <li>Iron Age – hill forts and tribal societies</li>
-    </ul>
-    <button onclick="document.getElementById('early-fact').style.display='block'">Show Fun Fact</button>
-    <p class="quiz-answer" id="early-fact">Fun Fact: Stonehenge was built during the late Neolithic period!</p>
-</div>
-
-<!-- Slide 3 -->
-<div class="slide">
-    <h1>The Roman Era</h1>
-    <p>The Romans invaded Britain in 43 AD and introduced roads, baths, and Hadrian's Wall.</p>
-    <button onclick="document.getElementById('roman-fact').style.display='block'">Show Fun Fact</button>
-    <p class="quiz-answer" id="roman-fact">London was founded by the Romans and called Londinium.</p>
-</div>
-
-<!-- Slide 4 -->
-<div class="slide">
-    <h1>The Middle Ages</h1>
-    <p>Key events:</p>
-    <ul>
-        <li>Norman Conquest – 1066</li>
-        <li>Magna Carta signed – 1215</li>
-        <li>Hundred Years' War – 1337–1453</li>
-        <li>Black Death – mid-14th century</li>
-    </ul>
-    <button onclick="document.getElementById('middle-quiz').style.display='block'">Quiz: When was the Magna Carta signed?</button>
-    <p class="quiz-answer" id="middle-quiz">Answer: 1215</p>
-</div>
-
-<!-- Slide 5 -->
-<div class="slide">
-    <h1>The Tudor Period</h1>
-    <p>Famous monarchs:</p>
-    <ul>
-        <li>Henry VIII – established the Church of England</li>
-        <li>Elizabeth I – defeated the Spanish Armada in 1588</li>
-    </ul>
-    <button onclick="alert('Tip: This period saw major religious and political changes.')">Show Tip</button>
-</div>
-
-<!-- Slide 6 -->
-<div class="slide">
-    <h1>The Industrial Revolution</h1>
-    <p>18th–19th century: Britain becomes a global industrial power.</p>
+    <h1>Industrial Revolution</h1>
+    <div class="image-placeholder">[Factory/Industry Image]</div>
+    <p>The Industrial Revolution (18th–19th century) transformed the UK:</p>
     <ul>
         <li>Steam engines and mechanized factories</li>
-        <li>Urbanization and social change</li>
-        <li>Innovations in transport and communication</li>
+        <li>Rapid urbanization and growth of cities</li>
+        <li>Transportation revolution (railways, canals)</li>
+        <li>Major social and economic changes</li>
     </ul>
-    <div class="image-placeholder">[Industrial Revolution Image]</div>
+    <button onclick="document.getElementById('industrial-fact').style.display='block'">Show Fun Fact</button>
+    <p class="quiz-answer" id="industrial-fact">Fact: By 1850, Britain produced 40% of the world’s coal and iron!</p>
 </div>
 
-<!-- Slide 7 -->
+<!-- Slide 3: Social Changes -->
 <div class="slide">
-    <h1>The 20th Century</h1>
-    <p>Major events:</p>
+    <h1>Social Changes</h1>
+    <p>The Industrial Revolution brought:</p>
     <ul>
-        <li>World War I (1914–1918) & II (1939–1945)</li>
-        <li>Formation of the NHS – 1948</li>
-        <li>Decolonization of the British Empire</li>
+        <li>New working conditions and labor movements</li>
+        <li>Rise of the middle class</li>
+        <li>Urban poverty and public health reforms</li>
     </ul>
-    <button onclick="alert('Fact: The UK played a major role in both World Wars.')">Fun Fact</button>
+    <button onclick="document.getElementById('social-quiz').style.display='block'">Quiz: What major public reform started in 1848?</button>
+    <p class="quiz-answer" id="social-quiz">Answer: Public Health Act</p>
 </div>
 
-<!-- Slide 8 -->
+<!-- Slide 4: Modern Politics -->
 <div class="slide">
-    <h1>Modern UK</h1>
+    <h1>Modern UK Politics</h1>
     <p>The UK today:</p>
     <ul>
-        <li>Constitutional monarchy and parliamentary democracy</li>
-        <li>Prime Minister is head of government</li>
+        <li>Constitutional monarchy with a parliamentary democracy</li>
+        <li>Prime Minister leads the government</li>
+        <li>Queen/King serves as ceremonial head of state</li>
         <li>Member of the Commonwealth</li>
-        <li>Major financial and cultural influence worldwide</li>
     </ul>
-    <button onclick="alert('Fun Fact: London is one of the world\'s largest financial centers.')">Fun Fact</button>
+    <button onclick="alert('Tip: The UK Parliament is one of the oldest in the world.')">Show Tip</button>
+</div>
+
+<!-- Slide 5: Economy -->
+<div class="slide">
+    <h1>Modern Economy</h1>
+    <p>The UK has a strong global economy:</p>
+    <ul>
+        <li>Financial hub: London</li>
+        <li>Advanced services and technology sectors</li>
+        <li>Major exports include machinery, aerospace, and pharmaceuticals</li>
+    </ul>
+    <div class="image-placeholder">[Economy/City Image]</div>
+</div>
+
+<!-- Slide 6: Society & Culture -->
+<div class="slide">
+    <h1>Society & Culture</h1>
+    <p>Modern UK is diverse and culturally rich:</p>
+    <ul>
+        <li>Multicultural population</li>
+        <li>Strong traditions in literature, music, and art</li>
+        <li>Major sports: Football, Rugby, Cricket</li>
+    </ul>
+    <button onclick="alert('Fun Fact: UK has over 400 museums and galleries!')">Fun Fact</button>
+</div>
+
+<!-- Slide 7: Challenges & Future -->
+<div class="slide">
+    <h1>Challenges & Future</h1>
+    <p>Contemporary issues:</p>
+    <ul>
+        <li>Economic inequality</li>
+        <li>Political debates: Brexit, devolution, climate policy</li>
+        <li>Globalization and technological advancement</li>
+    </ul>
+    <button onclick="alert('Fun Fact: The UK is leading in green energy innovation!')">Fun Fact</button>
 </div>
 
 <!-- Navigation -->
@@ -173,24 +176,22 @@
 </div>
 
 <script>
-    let currentSlide = 0;
-    const slides = document.querySelectorAll('.slide');
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
 
-    function showSlide(index) {
-        slides.forEach((slide, i) => {
-            slide.classList.toggle('active', i === index);
-        });
-    }
+function showSlide(index) {
+    slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
+}
 
-    function nextSlide() {
-        currentSlide = (currentSlide + 1) % slides.length;
-        showSlide(currentSlide);
-    }
+function nextSlide() {
+    currentSlide = (currentSlide + 1) % slides.length;
+    showSlide(currentSlide);
+}
 
-    function prevSlide() {
-        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-        showSlide(currentSlide);
-    }
+function prevSlide() {
+    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+    showSlide(currentSlide);
+}
 </script>
 
 </body>
