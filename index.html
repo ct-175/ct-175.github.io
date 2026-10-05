@@ -1,0 +1,2105 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Interaktiver BWL-Lernbegleiter für Technical Management: 42 Lernfolien, Quiz, Formeln und Rechenhilfen.">
+  <title>BWL · Lernstudio TM26</title>
+
+  <style>
+    :root {
+      --bg: #f4f3ed;
+      --paper: #fffefa;
+      --ink: #183d37;
+      --muted: #596b65;
+      --line: #d9ded5;
+      --accent: #cbea79;
+      --dark: #143d35;
+      --soft: #e9eee5;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 16px/1.55 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    button, input, select { font: inherit; }
+
+    button {
+      cursor: pointer;
+      color: inherit;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 15px;
+      min-height: 44px;
+    }
+
+    button:hover { background: var(--soft); }
+    button:disabled { opacity: .45; cursor: default; }
+
+    button, a, input, select, summary { outline-offset: 5px; }
+
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    summary:focus-visible {
+      outline: 3px solid #bd621f;
+    }
+
+    .primary {
+      background: var(--dark);
+      color: white;
+      border-color: var(--dark);
+    }
+
+    .primary:hover { background: #285449; }
+
+    .skip {
+      position: absolute;
+      left: 10px;
+      top: -100px;
+    }
+
+    .skip:focus {
+      top: 8px;
+      z-index: 50;
+      background: white;
+      padding: 10px;
+    }
+
+    header {
+      height: 84px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 34px;
+      gap: 16px;
+      background: var(--paper);
+    }
+
+    .brand {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    .logo {
+      background: var(--dark);
+      color: var(--accent);
+      padding: 8px 10px;
+      font-weight: 850;
+      border-radius: 9px;
+    }
+
+    .brand b { letter-spacing: -.6px; }
+
+    .brand small {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+    }
+
+    .tabs { display: flex; gap: 6px; }
+    .tabs button { border: 0; background: transparent; }
+
+    .tabs button[aria-pressed="true"] {
+      background: var(--dark);
+      color: white;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 265px minmax(0, 1fr);
+      min-height: calc(100vh - 84px);
+    }
+
+    aside {
+      padding: 26px 22px;
+      border-right: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 750;
+      letter-spacing: 1.7px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .search {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+      margin: 12px 0 18px;
+    }
+
+    .chapters { display: grid; gap: 6px; }
+
+    .chapters button {
+      text-align: left;
+      border: 0;
+      background: transparent;
+      padding: 12px;
+      font-size: 14px;
+      display: flex;
+      gap: 12px;
+    }
+
+    .chapters button[aria-current="true"] {
+      background: var(--dark);
+      color: white;
+    }
+
+    .chapters span {
+      opacity: .65;
+      font-size: 12px;
+      padding-top: 2px;
+    }
+
+    .aside-note {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 24px;
+    }
+
+    .track {
+      height: 5px;
+      border-radius: 5px;
+      background: var(--line);
+      overflow: hidden;
+      margin: 12px 0;
+    }
+
+    .track i {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: #688d2b;
+    }
+
+    .main {
+      padding: 28px clamp(20px, 4vw, 65px);
+      max-width: 1350px;
+      width: 100%;
+      margin: auto;
+      align-self: start;
+    }
+
+    .topline {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 18px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .tag {
+      display: inline-block;
+      border: 1px solid var(--line);
+      padding: 5px 10px;
+      border-radius: 30px;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .slide {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: clamp(22px, 4vw, 48px);
+      min-height: 580px;
+      box-shadow: 0 8px 24px #173c3205;
+      position: relative;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: clamp(30px, 4vw, 56px);
+      line-height: 1.08;
+      font-weight: 650;
+      letter-spacing: -2px;
+      max-width: 900px;
+      margin: 16px 0 18px;
+    }
+
+    h2 {
+      font-size: clamp(25px, 3.2vw, 41px);
+      letter-spacing: -1.2px;
+      line-height: 1.15;
+      margin: 0 0 12px;
+    }
+
+    h3 { font-size: 17px; margin: 0 0 7px; }
+
+    .lead {
+      font-size: 19px;
+      color: var(--muted);
+      max-width: 780px;
+      margin: 0 0 27px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 19px;
+    }
+
+    .card p {
+      margin: 0;
+      color: #425a51;
+      font-size: 15px;
+    }
+
+    .tip {
+      margin-top: 20px;
+      padding: 15px 18px;
+      border-radius: 10px;
+      background: var(--soft);
+      border-left: 3px solid #6a873c;
+      font-size: 14px;
+    }
+
+    .tip b {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      margin-bottom: 4px;
+    }
+
+    details {
+      margin-top: 16px;
+      border-top: 1px solid var(--line);
+      padding-top: 14px;
+      font-size: 14px;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 650;
+      min-height: 32px;
+    }
+
+    details p { color: var(--muted); }
+
+    .source {
+      margin-top: 19px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .slide.hero {
+      background: var(--dark);
+      color: #f5f6e9;
+    }
+
+    .hero .lead, .hero .source { color: #c6d8cd; }
+    .hero .tag { border-color: #50766b; }
+    .hero h1 { max-width: 680px; }
+    .hero .card { border-color: #45675c; background: #234a40; }
+    .hero .card p { color: #c6d8cd; font-size: 13px; }
+    .hero .card h3 { color: var(--accent); font-size: 15px; }
+    .hero .tip { background: #315545; border-color: var(--accent); }
+    .hero details { border-color: #50766b; }
+    .hero details p { color: #c6d8cd; }
+
+    .bottom {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .bottom .nav { display: flex; gap: 8px; }
+    .counter { font-size: 12px; color: var(--muted); }
+
+    .done[aria-pressed="true"] {
+      background: var(--accent);
+      border-color: #91ad54;
+    }
+
+    .results { display: grid; gap: 8px; margin: 0 0 18px; }
+    .results button { text-align: left; }
+    .results small { color: var(--muted); }
+
+    .qcard {
+      padding: 24px;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      border-radius: 16px;
+      margin-bottom: 16px;
+    }
+
+    .answers { display: grid; gap: 8px; margin: 15px 0; }
+    .answers button { text-align: left; }
+
+    .answers button.chosen {
+      border-color: var(--dark);
+      border-width: 2px;
+    }
+
+    .feedback {
+      border-radius: 8px;
+      padding: 14px;
+      background: var(--soft);
+      font-size: 14px;
+    }
+
+    .feedback.wrong { background: #fae6d7; }
+
+    .score {
+      padding: 20px;
+      background: var(--dark);
+      color: white;
+      border-radius: 14px;
+      margin-bottom: 20px;
+    }
+
+    .tools { display: grid; gap: 18px; }
+
+    .fields {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    label { font-size: 13px; }
+
+    label input, label select {
+      display: block;
+      width: 100%;
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 9px;
+      background: white;
+      color: var(--ink);
+      margin-top: 5px;
+    }
+
+    .calc-result {
+      margin-top: 20px;
+      padding: 18px;
+      background: var(--dark);
+      color: white;
+      border-radius: 10px;
+    }
+
+    .calc-result strong {
+      font-size: 27px;
+      color: var(--accent);
+      display: block;
+    }
+
+    .bar {
+      height: 12px;
+      background: #577264;
+      border-radius: 6px;
+      margin-top: 10px;
+      overflow: hidden;
+    }
+
+    .bar i {
+      display: block;
+      height: 100%;
+      background: var(--accent);
+    }
+
+    .small { font-size: 12px; color: var(--muted); }
+    .hosting ol { padding-left: 22px; }
+    .hosting li { margin: 12px 0; }
+    a { color: #255e47; }
+    .hidden, [hidden] { display: none !important; }
+    .mobile-menu, .print-copy { display: none; }
+
+    footer {
+      font-size: 11px;
+      color: var(--muted);
+      padding-top: 20px;
+    }
+
+    .readmode .slide { margin-bottom: 22px; min-height: 0; }
+    .readmode .slide.hero { background: var(--paper); color: var(--ink); }
+    .readmode .hero .card { background: var(--soft); }
+
+    .readmode .hero .lead,
+    .readmode .hero .card p,
+    .readmode .hero .source,
+    .readmode .hero details p { color: var(--muted); }
+
+    .readmode .hero .card h3 { color: var(--ink); }
+    .readmode .hero .tip { background: var(--soft); }
+    .readmode h2 { font-size: 30px; }
+    .readmode .cards { gap: 10px; }
+
+    @media (min-width: 1550px) {
+      .slide { min-height: 650px; }
+    }
+
+    @media (max-width: 1000px) {
+      header { padding: 15px 20px; height: auto; flex-wrap: wrap; }
+      .layout { grid-template-columns: 210px minmax(0, 1fr); }
+      aside { padding: 24px 12px; }
+      .tabs button { font-size: 13px; padding: 9px; }
+      .main { padding: 24px; }
+      .slide { padding: 26px; min-height: 0; }
+      .cards { grid-template-columns: 1fr; }
+      h1 { letter-spacing: -1px; }
+    }
+
+    @media (max-width: 680px) {
+      .layout { display: block; }
+      .mobile-menu { display: block; }
+      .brand small { font-size: 9px; }
+      header { gap: 10px; }
+      .tabs { order: 3; width: 100%; overflow: auto; }
+      .tabs button { white-space: nowrap; flex: 1; }
+
+      .layout aside {
+        display: none;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      body.menu-open aside { display: block; }
+      .main { padding: 18px 14px; }
+      .slide { padding: 23px 19px; border-radius: 15px; }
+      .lead { font-size: 17px; }
+      .bottom { flex-wrap: wrap; }
+      .bottom .nav { margin-left: auto; }
+      .fields { grid-template-columns: 1fr; }
+      .topline { align-items: flex-start; }
+      .card { padding: 16px; }
+      .brand b { font-size: 14px; }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      button { transition: background .15s; }
+      .bar i { transition: width .2s; }
+    }
+
+    @media print {
+      header, aside, .topline, .bottom, footer, #screen, #searchResults {
+        display: none !important;
+      }
+
+      .layout { display: block; }
+      .main { padding: 0; max-width: none; }
+      .print-copy { display: block; }
+
+      .print-copy article {
+        page-break-after: always;
+        padding: 20px;
+        min-height: 0;
+      }
+
+      .print-copy .cards { display: block; }
+
+      .print-copy .card {
+        break-inside: avoid;
+        margin-bottom: 10px;
+      }
+
+      .print-copy details { display: block; }
+      body { background: white; color: black; }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip" href="#main">Zum Lerninhalt</a>
+
+  <header>
+    <div class="brand">
+      <span class="logo">bwl.</span>
+      <div>
+        <b>Lernstudio</b>
+        <small>Technical Management · TM26</small>
+      </div>
+    </div>
+
+    <button class="mobile-menu" id="menu" aria-expanded="false" aria-controls="sidebar">
+      Kapitel
+    </button>
+
+    <nav class="tabs" aria-label="Ansicht">
+      <button data-view="slides" aria-pressed="true">Lernfolien</button>
+      <button data-view="read" aria-pressed="false">Lesen</button>
+      <button data-view="quiz" aria-pressed="false">Quiz</button>
+      <button data-view="calc" aria-pressed="false">Rechnen</button>
+      <button data-view="help" aria-pressed="false">Info</button>
+    </nav>
+  </header>
+
+  <div class="layout">
+    <aside id="sidebar">
+      <div class="eyebrow">Dein Lernpfad</div>
+
+      <label for="search" class="small">Thema suchen</label>
+      <input id="search" class="search" type="search" placeholder="z. B. Ressourcen">
+
+      <nav class="chapters" id="chapters" aria-label="Kapitel"></nav>
+
+      <div class="aside-note">
+        <b id="learned">0 von 42 gelernt</b>
+        <div class="track"><i id="learnbar"></i></div>
+        <span id="saveinfo">Dein Fortschritt bleibt lokal in diesem Browser.</span>
+        <p>PDF → 42 Lernfolien<br>5 Kapitel · 20 Wissensfragen</p>
+        <button id="print">Drucken / PDF</button>
+      </div>
+    </aside>
+
+    <main class="main" id="main" tabindex="-1">
+      <div id="searchResults" class="results" aria-live="polite"></div>
+      <div id="screen"></div>
+      <div id="printCopy" class="print-copy"></div>
+
+      <footer>
+        Eigenständig formulierte Lernfassung nach den BWL-Vorlesungsfolien
+        von Prof. Dr.-Ing. Olaf Kreyenkamp · DHBW VS · WS 2026.
+        Seitenverweise beziehen sich auf die hochgeladene PDF.
+      </footer>
+    </main>
+  </div>
+
+  <noscript>Für die interaktive Präsentation bitte JavaScript aktivieren.</noscript>
+
+  <script>
+    const slides = [
+      {
+        c: 0,
+        t: "BWL verstehen. Zusammenhänge erkennen.",
+        lead: "Dein interaktiver Lernbegleiter für Technical Management · WS 2026.",
+        items: [
+          ["01 · Grundlagen", "Bedürfnisse, Wirtschaften, Kennzahlen und Unternehmen."],
+          ["02 · Gestaltung", "Standorte, Rechtsformen, Zusammenschlüsse und Krisen."],
+          ["03 · Betriebliche Funktionen", "Beschaffung, Material, Lager und Produktion."],
+          ["04 · Informationen & Finanzen", "Rechnungswesen, Finanzierung, Investition und Controlling."],
+          ["05 · Steuerung", "Ziele, Führung, Entscheidungen, Organisation und Personal."]
+        ],
+        pages: "1–413",
+        tip: "Lerne in kleinen Etappen: Thema lesen → Beispiel öffnen → selbst erklären → Wissen testen.",
+        example: "Grundlage: Vorlesungsfolien von Prof. Dr.-Ing. Olaf Kreyenkamp, DHBW Villingen-Schwenningen. Eigenständig formulierte, verdichtete Lernfassung; Wiederholungen und organisatorische Folien sind zusammengefasst. Eigene Übungsbeispiele sind entsprechend markiert. Die Folien enthalten ältere Datums- und Rechtsbezüge. Rechts- und Steuerthemen werden hier nur als Lernüberblick der Vorlage wiedergegeben; keine aktualisierte Rechtsdarstellung. Vollständige Aufgaben und Vertiefungen bleiben in der PDF."
+      },
+      {
+        c: 1,
+        t: "Warum wirtschaften wir?",
+        lead: "Bedürfnisse treffen auf begrenzte Mittel.",
+        items: [
+          ["Bedürfnis", "Ein empfundener Mangel, etwa Hunger, Sicherheit oder Anerkennung."],
+          ["Bedarf", "Die konkrete Absicht, ein Bedürfnis zu befriedigen."],
+          ["Nachfrage", "In der Darstellung dieser Vorlesung: Bedarf plus Kaufkraft, konkret auf einen Tausch gerichtet."],
+          ["Ressourcen", "Einsatzmöglichkeiten wie Zeit, Geld, Arbeitskraft, Wissen oder Material, mit denen wir Mittel zur Bedarfsdeckung erlangen."]
+        ],
+        pages: "14–24",
+        tip: "Die Vorlesung verwendet: Bedürfnis + Befriedigungswille = Bedarf; Bedarf + Kaufkraft = Nachfrage.",
+        example: "Eigenes Beispiel: Du hast Hunger (Bedürfnis), möchtest ein belegtes Brötchen (Bedarf) und fragst es mit ausreichendem Geld beim Bäcker nach (Nachfrage)."
+      },
+      {
+        c: 1,
+        t: "Bedürfnisse & Knappheit",
+        lead: "Nicht jedes Bedürfnis ist gleich dringlich; nicht jedes Gut überall verfügbar.",
+        items: [
+          ["Bedürfnisarten", "Existenz-, Grund- und Luxusbedürfnisse; individuell oder kollektiv; materiell oder immateriell."],
+          ["Maslow", "Physiologische Bedürfnisse → Sicherheit → soziale Zugehörigkeit → Anerkennung → Selbstverwirklichung. Ein vereinfachendes Motivationsmodell."],
+          ["Knappheit", "Kann Menge, Qualität, Ort oder Zeitpunkt betreffen. Auch gesellschaftliche Regeln können Zugang begrenzen."],
+          ["Freie und wirtschaftliche Güter", "Wirtschaftsgüter sind knapp. Freie Güter stehen unter den jeweiligen Bedingungen ohne Preis zur Verfügung."]
+        ],
+        pages: "16–24",
+        tip: "Knappheit zwingt zur Auswahl zwischen Alternativen.",
+        example: "Eigenes Beispiel: Wasser kann regional reichlich vorhanden sein, aber an einem anderen Ort oder in Trinkwasserqualität knapp werden."
+      },
+      {
+        c: 1,
+        t: "Das ökonomische Prinzip",
+        lead: "Setze knappe Ressourcen möglichst sinnvoll ein.",
+        items: [
+          ["Minimum", "Ein festes Ergebnis mit möglichst wenig Einsatz erreichen."],
+          ["Maximum", "Mit einem festen Einsatz möglichst viel Ergebnis erreichen."],
+          ["Optimum / Extremum", "Einsatz und Ergebnis gemeinsam so abstimmen, dass ihre Beziehung bestmöglich wird."]
+        ],
+        pages: "31–33",
+        tip: "Frage zuerst: Was ist vorgegeben – Einsatz oder Ergebnis?",
+        example: "Eigene Beispiele: 100 Bauteile mit möglichst wenig Material = Minimum. Aus 100 kg Material möglichst viele Bauteile = Maximum. Eine wirtschaftlich passende Produktionsmenge wählen = Optimierungsproblem."
+      },
+      {
+        c: 1,
+        t: "Vier Kennzahlen auseinanderhalten",
+        lead: "Menge, Wert und Kapital beantworten unterschiedliche Fragen.",
+        items: [
+          ["Produktivität", "Outputmenge ÷ Inputmenge, z. B. Stück je Arbeitsstunde."],
+          ["Wirtschaftlichkeit", "Wertmäßiger Output ÷ wertmäßiger Input. Bei gleicher Abgrenzung bedeutet > 1: Outputwert übersteigt Inputwert."],
+          ["Eigenkapitalrentabilität", "Gewinn ÷ Eigenkapital × 100 %."],
+          ["Gesamtkapitalrentabilität", "(Gewinn + Fremdkapitalzinsen) ÷ Gesamtkapital × 100 %."]
+        ],
+        pages: "34–36",
+        tip: "Hohe Produktivität allein garantiert keinen Gewinn.",
+        example: "Gelöste Aufgabe aus S. 35: Tisch A kostet 2 € Schrauben + 10 € Platte + 8 € Beine + 15 € Arbeit = 35 €; Erlös 27 €, Ergebnis −8 €. Tisch B kostet 14 + 21 + 10 = 45 €; Erlös 55 €, Ergebnis +10 €. Produktivität: A = 0,67 Stück/Stunde, B = 1 Stück/Stunde. In 9 Stunden: 6 A-Tische oder 9 B-Tische. Weitere Kosten sind nicht vorgegeben."
+      },
+      {
+        c: 1,
+        t: "Vom Input zur Wertschöpfung",
+        lead: "Betriebe kombinieren Produktionsfaktoren zu marktfähigen Leistungen.",
+        items: [
+          ["Input", "Arbeit, Betriebsmittel, Werkstoffe, Wissen und Informationen."],
+          ["Transformation", "Einsatzgüter werden verarbeitet, kombiniert oder als Dienstleistung eingesetzt."],
+          ["Output", "Sachgüter und Dienstleistungen zur Bedarfsdeckung."],
+          ["Wertschöpfung", "Leistungserlöse abzüglich bezogener Vorleistungen; wird u. a. zu Löhnen, Zinsen, Steuern und Gewinn."]
+        ],
+        pages: "25–30, 37–43",
+        tip: "Wertschöpfung ist nicht dasselbe wie Gewinn.",
+        example: "Beispiel der Folien: 3 Mio. € Leistungserlöse − 2 Mio. € Vorleistungen = 1 Mio. € Wertschöpfung. Davon entfallen im Beispiel 700.000 € auf Löhne, je 100.000 € auf Zinsen, Steuern und Gewinn. Geld ermöglicht Tausch, Wertvergleich und Wertaufbewahrung; am Markt treffen Angebot und Nachfrage zusammen."
+      },
+      {
+        c: 1,
+        t: "Unternehmen, Betrieb, Firma",
+        lead: "Begriffe und Sichtweisen sauber trennen.",
+        items: [
+          ["Unternehmen / Betrieb", "Unternehmen bezeichnet den wirtschaftlich-rechtlichen Zusammenhang; Betrieb die organisierte Leistungserstellung. Ein Unternehmen kann mehrere Betriebsstätten haben."],
+          ["Firma / Fabrik", "Firma ist der kaufmännische Name; Fabrik eine Produktionsstätte für Sachgüter."],
+          ["Typologie", "Unterscheidung nach Ziel, Leistung, Branche, Größe oder Rechtsform. Gewinnorientierte und Non-Profit-Betriebe setzen unterschiedliche Schwerpunkte."],
+          ["Vier Perspektiven", "Funktional: Aufgaben; institutionell: Branchen; genetisch: Lebensphasen; prozessorientiert: zusammenhängende Abläufe."]
+        ],
+        pages: "45–74",
+        tip: "Ein Unternehmen ist ein offenes, dynamisches, komplexes und soziales System.",
+        example: "Eigene Einordnung: Eine Fahrradfirma kann zwei Fabriken betreiben. Einkauf und Vertrieb sind Funktionen; die Auftragsabwicklung ist ein Prozess. Ein Kaufvertrag ist eine einzelne Transaktion."
+      },
+      {
+        c: 1,
+        t: "Umsatzprozess & Stakeholder",
+        lead: "Ein Unternehmen steht im ständigen Austausch mit seiner Umwelt.",
+        items: [
+          ["Leistungsfluss", "Beschaffung → Produktion → Absatz."],
+          ["Finanzfluss", "Kundenzahlungen, Lieferantenzahlungen, Eigen- und Fremdkapital, Zinsen und Abgaben begleiten den Leistungsfluss."],
+          ["Stakeholder", "Eigentümer, Beschäftigte, Kunden, Lieferanten, Kapitalgeber, Staat und Öffentlichkeit haben verschiedene Interessen."],
+          ["Ethik & Umwelt", "Märkte, Gesellschaft, Natur und Technologie beeinflussen Entscheidungen. Verantwortung betrifft auch Glaubwürdigkeit und das Menschenbild."]
+        ],
+        pages: "76–89",
+        tip: "Stakeholder sind alle Anspruchsgruppen; Shareholder sind Anteilseigner.",
+        example: "Eigenes Beispiel: Niedrigere Einkaufspreise verbessern möglicherweise den Gewinn, können aber Lieferanten belasten. Gute Führung erkennt solche Interessenkonflikte und wägt sie ab."
+      },
+      {
+        c: 1,
+        t: "BWL als Wissenschaft",
+        lead: "Modelle helfen beim Erklären und Entscheiden – ihre Annahmen begrenzen sie.",
+        items: [
+          ["Wissenschaftliches Arbeiten", "Gegenstand und Erkenntnisziel bestimmen, methodisch vorgehen und Ergebnisse systematisch einordnen."],
+          ["Homo oeconomicus", "Modell eines rationalen, vollständig informierten und eigennutzorientierten Entscheiders."],
+          ["Ansätze", "Gutenberg betont die Kombination von Produktionsfaktoren; Heinen betont Entscheidungen."],
+          ["Weitere Leitbilder", "Schmalenbach: praktische Gestaltung; Nicklisch: ethisch-normative Orientierung; Rieger: theoretische Erklärung."]
+        ],
+        pages: "91–107",
+        tip: "Ein Modell vereinfacht die Wirklichkeit; Menschen entscheiden nicht immer wie das Modell.",
+        example: "Eigenes Beispiel: Eine formal günstigere Alternative kann wegen Gewohnheit oder fehlender Informationen ungewählt bleiben."
+      },
+      {
+        c: 2,
+        t: "Standortwahl in einer vernetzten Welt",
+        lead: "Standortentscheidungen wirken lange und verbinden viele Zielgrößen.",
+        items: [
+          ["Globalisierung", "Grenzüberschreitende Verflechtung von Handel, Kapital, Wissen und Unternehmensaktivitäten."],
+          ["Standortebenen", "Land, Region, Kommune, Grundstück und innerbetriebliche Anordnung."],
+          ["Standortfaktoren", "Arbeitskräfte, Material, Transport, Infrastruktur, Absatzmarkt und wirtschaftliches Umfeld."],
+          ["Abwägung", "Ein niedriger Mietpreis kann mit hohen Logistikkosten oder schwacher Kundennähe einhergehen."]
+        ],
+        pages: "115–125",
+        tip: "Nicht den billigsten Einzelaspekt, sondern die Gesamteignung bewerten.",
+        example: "Formen internationaler Tätigkeit aus der Vorlage: Export, Lizenzvergabe, Franchising, Joint Venture, Niederlassung und Tochtergesellschaft. Sie unterscheiden sich in Kapitalbindung und Steuerung vor Ort."
+      },
+      {
+        c: 2,
+        t: "Nutzwertanalyse",
+        lead: "Mehrere Kriterien zu einem nachvollziehbaren Urteil verbinden.",
+        items: [
+          ["1 · Kriterien wählen", "Nur entscheidungsrelevante Merkmale aufnehmen."],
+          ["2 · Gewichten", "Bedeutung der Kriterien festlegen; Gewichte summieren sich auf 100 %."],
+          ["3 · Bewerten", "Alternativen auf einer einheitlichen Skala bewerten: hoher Punktwert = hohe Eignung."],
+          ["4 · Verrechnen", "Nutzwert = Summe aus Gewicht × Punktwert. Höherer Nutzwert ist im Modell günstiger."]
+        ],
+        pages: "125–126",
+        tip: "Gewichte und Bewertungen enthalten subjektive Annahmen.",
+        example: "In der PDF ergeben die aufgeführten Gewichte und Punkte: Standort 1 = 0,25×3 + 0,40×2 + 0,35×3 = 2,60; Standort 2 = 2,80; Standort 3 = 3,65. Die dort gedruckte Summe 2,50 für Standort 1 ist rechnerisch nicht korrekt. Standort 3 bleibt vorn."
+      },
+      {
+        c: 2,
+        t: "Rechtsformen vergleichen",
+        lead: "Die Rechtsform legt den Rahmen für Leitung, Haftung und Kapital fest.",
+        items: [
+          ["Entscheidungskriterien", "Haftung, Leitungsrechte, Finanzierung, Gewinnbeteiligung, Kontinuität und Verwaltungsaufwand."],
+          ["Einzelunternehmen / OHG", "In der grundlegenden Gegenüberstellung persönliche, unbeschränkte Haftung des Inhabers bzw. der Gesellschafter."],
+          ["KG", "Komplementär und Kommanditist haben unterschiedliche Haftungs- und Leitungsrollen."],
+          ["GmbH / AG", "Kapitalgesellschaften mit eigenem Gesellschaftsvermögen; grundlegende Trennung von Gesellschaft und Anteilseignern."]
+        ],
+        pages: "129–143",
+        tip: "Rechtsformen nach denselben Kriterien vergleichen, nicht nur Namen auswendig lernen.",
+        example: "Zusätzliche Formen der Vorlage: GbR, stille Gesellschaft, Genossenschaft und GmbH & Co. KG. Bei Letzterer übernimmt eine GmbH die Komplementärrolle. Freie Berufe und Handelsgewerbe werden in den Folien getrennt eingeordnet. Hier werden keine gesetzlichen Detailgrenzen aktualisiert."
+      },
+      {
+        c: 2,
+        t: "Wer führt eine AG?",
+        lead: "Leitung, Überwachung und Eigentümerentscheidungen sind aufgeteilt.",
+        items: [
+          ["Vorstand", "Leitet das Unternehmen und vertritt es nach außen."],
+          ["Aufsichtsrat", "Überwacht und bestellt den Vorstand."],
+          ["Hauptversammlung", "Versammlung der Aktionäre; entscheidet unter anderem über zentrale Eigentümerangelegenheiten."],
+          ["GmbH im Vergleich", "Geschäftsführung und Gesellschafterversammlung stehen im Mittelpunkt; die Ausgestaltung unterscheidet sich von der AG."]
+        ],
+        pages: "144–147",
+        tip: "Vorstand führt, Aufsichtsrat überwacht.",
+        example: "Eigenes Lernbeispiel: Eine Aktionärin führt nicht selbst das Tagesgeschäft. Ihre Eigentümerrechte nimmt sie insbesondere über die Hauptversammlung wahr."
+      },
+      {
+        c: 2,
+        t: "Kooperation oder Konzentration?",
+        lead: "Zusammenarbeit kann von einzelnen Projekten bis zur Verschmelzung reichen.",
+        items: [
+          ["Kooperation", "Zusammenarbeit eigenständiger Unternehmen, etwa Einkaufskooperation, Arbeitsgemeinschaft oder strategische Allianz."],
+          ["Joint Venture", "Gemeinschaftsunternehmen für gemeinsame Aufgaben."],
+          ["Konzern", "Rechtlich selbstständige Unternehmen unter einheitlicher Leitung."],
+          ["Fusion", "Verschmelzung; mindestens ein Unternehmen verliert seine rechtliche Selbstständigkeit."]
+        ],
+        pages: "150–170",
+        tip: "Horizontal = gleiche Stufe; vertikal = aufeinanderfolgende Stufen; lateral = branchenfremd.",
+        example: "Motive: Wachstum, Synergien und Risikostreuung. Eigene Beispiele: Zwei Autohersteller = horizontal; Hersteller und Zulieferer = vertikal. Wettbewerbsbeschränkende Absprachen sind von produktiver Zusammenarbeit zu unterscheiden; die Vorlage behandelt dazu Kartelle."
+      },
+      {
+        c: 2,
+        t: "Krise, Sanierung, Liquidation",
+        lead: "Eine Unternehmenskrise kann unterschiedliche Ausgänge haben.",
+        items: [
+          ["Krisenursachen", "Die Vorlage nennt Managementfehler, Absatzprobleme und Unterfinanzierung."],
+          ["Sanierung", "Maßnahmen zur Wiederherstellung wirtschaftlicher Tragfähigkeit."],
+          ["Finanzielle und operative Hebel", "Zusätzliches Kapital, angepasste Zahlungsbedingungen, Portfoliobereinigung und bessere Prozesse."],
+          ["Auflösung und Insolvenz", "Liquidation wickelt ein Unternehmen ab. Ein Insolvenzverfahren kann je nach Situation auf Fortführung oder Verwertung hinauslaufen."]
+        ],
+        pages: "178–181",
+        tip: "Gewinn und Zahlungsfähigkeit sind verschiedene Größen.",
+        example: "Eigenes Beispiel: Viele Verkäufe auf Rechnung können bilanziell erfolgreich sein, während Geld für fällige Zahlungen fehlt. Die Vorlesungsfolien ersetzen keine Prüfung gesetzlicher Insolvenzvoraussetzungen."
+      },
+      {
+        c: 2,
+        t: "Steuerarten systematisch einordnen",
+        lead: "Für den Lernüberblick zählt zuerst: Was wird bei wem besteuert?",
+        items: [
+          ["Einkommensteuer", "Bezieht sich auf Einkommen natürlicher Personen."],
+          ["Körperschaftsteuer", "Betrifft insbesondere das Einkommen von Kapitalgesellschaften."],
+          ["Gewerbesteuer", "Knüpft an den Gewerbebetrieb bzw. Gewerbeertrag an."],
+          ["Umsatzsteuer", "Bezieht sich auf steuerbare Umsätze; Vorsteuer und Umsatzsteuer gehören zum Grundprinzip."]
+        ],
+        pages: "182–189",
+        tip: "Ertragsteuern und Umsatzsteuer nicht verwechseln.",
+        example: "Die PDF behandelt außerdem die Vermögensteuer und enthält historische Steuersätze und Rechtsstände. Diese Lernfassung übernimmt keine alten Grenzwerte oder Tarife als aktuelle Fakten."
+      },
+      {
+        c: 3,
+        t: "Die betrieblichen Funktionen",
+        lead: "Leistung, Finanzen und Führung müssen zusammenpassen.",
+        items: [
+          ["Leistungswirtschaft", "Beschaffung, Produktion und Absatz."],
+          ["Unterstützende Funktionen", "Forschung und Entwicklung, Logistik, Personal, Rechnungswesen und weitere Dienste."],
+          ["Materialwirtschaft", "Materialverfügbarkeit einschließlich Beschaffung, Lagerung und innerbetrieblichem Transport sichern."],
+          ["Supply Management", "Lieferanten, Betrieb und Kunden über Unternehmensgrenzen hinweg koordinieren."]
+        ],
+        pages: "193–204",
+        tip: "Richtiges Material, richtige Menge und Qualität, richtiger Zeitpunkt und Ort.",
+        example: "Eigenes Beispiel: Ein fehlendes Bauteil stoppt die Montage, verzögert den Verkauf und damit den Geldzufluss. Ein Beschaffungsproblem betrifft somit mehr als nur den Einkauf."
+      },
+      {
+        c: 3,
+        t: "Welche Materialien gibt es?",
+        lead: "Die Funktion im Produktionsprozess bestimmt die Einordnung.",
+        items: [
+          ["Rohstoffe", "Wesentliche Bestandteile des Produkts, etwa Holz für einen Tisch."],
+          ["Hilfsstoffe", "Ergänzende Bestandteile, etwa Leim oder Schrauben."],
+          ["Betriebsstoffe", "Werden im Prozess verbraucht, ohne Bestandteil des Endprodukts zu werden, etwa Schmierstoff."],
+          ["Halbfabrikate & Handelswaren", "Halbfabrikate sind bereits bearbeitet; Handelswaren werden unverändert weiterverkauft."]
+        ],
+        pages: "198–200",
+        tip: "Betriebsstoffe werden verbraucht; Betriebsmittel wie Maschinen dienen wiederholt der Produktion.",
+        example: "Die Beispiele sind eigene Lernbeispiele. Entscheidend ist die Verwendung im konkreten Betrieb: Derselbe Gegenstand kann je nach Einsatz anders einzuordnen sein."
+      },
+      {
+        c: 3,
+        t: "Lieferanten strategisch auswählen",
+        lead: "Preis ist nur ein Teil der Entscheidung.",
+        items: [
+          ["Einkaufsportfolio", "Strategische Artikel: hoher Ergebniseinfluss und hohes Risiko. Hebelartikel: hoher Einfluss, geringeres Risiko."],
+          ["Weitere Artikel", "Engpassartikel: geringerer Ergebniseinfluss, hohes Versorgungsrisiko. Unkritische Artikel: beide Dimensionen eher niedrig."],
+          ["Sourcing", "Single: bewusst ein Lieferant; Sole: nur ein möglicher Anbieter; Double/Multiple: mehrere Lieferanten."],
+          ["Auswahlkriterien", "Qualität, Zuverlässigkeit, Lieferzeit, Konditionen, Kapazität, Standort und Abhängigkeit."]
+        ],
+        pages: "206–215",
+        tip: "Ein geringer Einkaufswert bedeutet nicht automatisch ein geringes Ausfallrisiko.",
+        example: "Eigenes Beispiel: Ein billiger Spezialstecker kann die ganze Produktion stoppen. Für ihn kann Versorgungssicherheit wichtiger sein als ein weiterer Preisnachlass."
+      },
+      {
+        c: 3,
+        t: "Beschaffung & Bedarf",
+        lead: "Wie viel benötigt wird und wann es ankommt, gehört zusammen.",
+        items: [
+          ["Beschaffungsprinzipien", "Fallweise bei Bedarf, Vorratsbeschaffung oder fertigungssynchron (Just-in-Time)."],
+          ["Programmgebunden", "Produktionsplan und Stücklisten liefern den Materialbedarf."],
+          ["Verbrauchsgebunden", "Vergangenheitsverbräuche dienen als Prognose, etwa mit Mittelwerten oder exponentieller Glättung."],
+          ["Nettobedarf", "Bruttobedarf minus verfügbare Bestände und gesicherte Zugänge; notwendige Reserven und Zusatzbedarfe berücksichtigen."]
+        ],
+        pages: "216–221",
+        tip: "Just-in-Time senkt Bestände, verlangt aber zuverlässige Lieferungen und Planung.",
+        example: "Eigenes Beispiel ohne Reserven: 500 Teile Bruttobedarf − 120 Teile verfügbarer Bestand − 80 Teile bestätigte Lieferung = 300 Teile Nettobedarf."
+      },
+      {
+        c: 3,
+        t: "ABC trifft XYZ",
+        lead: "Wertbedeutung und Planbarkeit sind zwei verschiedene Dimensionen.",
+        items: [
+          ["ABC: Wert", "A-Güter binden einen großen Anteil des Verbrauchswerts; C-Güter nur einen kleinen. B liegt dazwischen."],
+          ["XYZ: Verlauf", "X = gleichmäßig; Y = trend- oder saisonabhängig; Z = unregelmäßig."],
+          ["Kombination", "AX: wertvoll und gut planbar. AZ: wertvoll und schwer planbar."],
+          ["Konsequenz", "Steuerungsaufwand, Prognosen und Bestände an die jeweilige Kategorie anpassen."]
+        ],
+        pages: "222–223",
+        tip: "ABC fragt „Wie bedeutsam?“, XYZ fragt „Wie vorhersehbar?“. ",
+        example: "Prozentgrenzen in der Vorlage sind Richtwerte, keine festen Naturgesetze. Eigene Lernidee: AZ-Artikel intensiv beobachten, CX-Artikel mit möglichst einfachen Routineprozessen beschaffen."
+      },
+      {
+        c: 3,
+        t: "Bestellmenge & Lager",
+        lead: "Verfügbarkeit kostet Geld; zu wenig Bestand kann ebenfalls teuer werden.",
+        items: [
+          ["Zielkonflikt", "Große Bestellungen reduzieren Bestellvorgänge, erhöhen aber durchschnittliche Bestände und Lagerkosten."],
+          ["Bestellpunkt", "Bestellen, sobald der festgelegte Bestandswert erreicht wird."],
+          ["Bestellrhythmus", "In festen zeitlichen Abständen bestellen."],
+          ["Lagerfunktionen", "Versorgen, Schwankungen puffern, sortieren, präsentieren, reifen lassen und ggf. Preisänderungen nutzen."]
+        ],
+        pages: "224–237",
+        tip: "Zur Gesamtsicht gehören Beschaffungs-, Lager- und Fehlmengenkosten.",
+        example: "FIFO: zuerst Eingelagertes zuerst heraus. LIFO: zuletzt Eingelagertes zuerst heraus. FEFO: zuerst ablaufende Ware zuerst heraus. Dynamische bzw. chaotische Lagerung nutzt flexible, dokumentierte Lagerplätze. Lagerstufen: Eingang, Zwischenlager und Fertigwarenlager."
+      },
+      {
+        c: 3,
+        t: "Lagerkennzahlen",
+        lead: "Bestände, Durchsatz und Bindungsdauer gemeinsam betrachten.",
+        items: [
+          ["Durchschnittsbestand", "Vereinfachung: (Anfangsbestand + Endbestand) ÷ 2. Alternativ: (Anfangsbestand + 12 Monatsendbestände) ÷ 13."],
+          ["Umschlag", "Jährlicher Lagerabgang ÷ durchschnittlicher Lagerbestand. Mengen- oder Wertbasis müssen zusammenpassen."],
+          ["Lagerdauer", "360 ÷ Umschlagshäufigkeit, entsprechend der Jahreskonvention der Folien."],
+          ["Interpretation", "Höherer Umschlag bedeutet rechnerisch kürzere Lagerdauer; Versorgungssicherheit bleibt zusätzlich zu prüfen."]
+        ],
+        pages: "202",
+        tip: "Die Kennzahlen allein bewerten nicht die Lieferfähigkeit.",
+        example: "Eigenes Beispiel: 120.000 € Jahresverbrauch und 20.000 € Durchschnittsbestand ergeben 6 Umschläge und 60 Tage durchschnittliche Lagerdauer."
+      },
+      {
+        c: 3,
+        t: "Produktion planen",
+        lead: "Was, wie viel und wie produziert wird, sind verschiedene Entscheidungen.",
+        items: [
+          ["Ziele", "Menge, Qualität und Termine erfüllen; zugleich Kosten, Flexibilität und Umweltwirkungen beachten."],
+          ["Produktionsprogramm", "Gesamtheit der selbst erstellten Leistungen. Das Absatzprogramm enthält die angebotenen Leistungen, ggf. auch Handelswaren."],
+          ["Make or Buy", "Selbst herstellen oder zukaufen? Kosten, Know-how, Kapazitäten und Abhängigkeit abwägen."],
+          ["Engpass", "Der knappste Bereich begrenzt die kurzfristige Produktionsmenge. Deckungsbeiträge helfen bei der Auswahl."]
+        ],
+        pages: "239–246, 252–255",
+        tip: "Stückdeckungsbeitrag = Verkaufspreis − variable Stückkosten.",
+        example: "Eigene Vertiefung: Bei einem Engpass zählt häufig der Deckungsbeitrag je Engpasseinheit. 30 € je Stück bei 3 Maschinenstunden = 10 €/Stunde; 24 € bei 2 Stunden = 12 €/Stunde. Unter sonst gleichen Bedingungen nutzt das zweite Produkt den Engpass besser."
+      },
+      {
+        c: 3,
+        t: "Von der Entwicklung zur Fertigung",
+        lead: "Technische Arbeit und kaufmännische Planung greifen ineinander.",
+        items: [
+          ["Forschung & Entwicklung", "Forschung schafft Erkenntnisse; Entwicklung setzt sie in Produktfunktionen um; Konstruktion konkretisiert die Gestaltung."],
+          ["PPS & Arbeitsvorbereitung", "Material, Kapazität, Termine, Werkzeuge und Arbeitsabläufe aufeinander abstimmen."],
+          ["Qualität & Instandhaltung", "Eingänge, Zwischenprodukte, Endprodukte und Prozesse prüfen; Anlagen warten, inspizieren und instand setzen."],
+          ["Fertigungsformen", "Einzel-, Serien-, Sorten- und Massenfertigung; Werkstatt-, Gruppen- und Fließorganisation."]
+        ],
+        pages: "247–259",
+        tip: "Fertigungstyp beschreibt die Wiederholung; Organisationstyp die Anordnung und Abläufe.",
+        example: "Eigene Beispiele: Maßgeschneiderte Anlage = Einzelfertigung; begrenzte Modellreihe = Serie; dauerhaft gleiche Schraube = Massenfertigung. In der Werkstatt stehen gleichartige Maschinen zusammen, in der Fließfertigung folgt die Anordnung dem Arbeitsablauf."
+      },
+      {
+        c: 4,
+        t: "Rechnungswesen: außen und innen",
+        lead: "Informationen dienen unterschiedlichen Empfängern und Entscheidungen.",
+        items: [
+          ["Externes Rechnungswesen", "Dokumentation und Information für externe Adressaten, insbesondere über Buchführung und Abschluss."],
+          ["Internes Rechnungswesen", "Informationen zur Planung, Steuerung und Kontrolle, insbesondere Kosten- und Leistungsrechnung."],
+          ["Bestandsgrößen", "Beziehen sich auf einen Zeitpunkt, z. B. Kassenbestand oder Schulden."],
+          ["Stromgrößen", "Beziehen sich auf einen Zeitraum, z. B. Einzahlungen oder Aufwendungen eines Monats."]
+        ],
+        pages: "264–277",
+        tip: "Bilanz = Zeitpunkt; GuV = Zeitraum.",
+        example: "Eigenes Beispiel: 5.000 € Kontostand am 31.12. sind ein Bestand. 30.000 € Kundeneinzahlungen während des Jahres sind eine Stromgröße."
+      },
+      {
+        c: 4,
+        t: "Vier Ebenen des Rechnungswesens",
+        lead: "Eine Zahlung, ein Kauf und ein Verbrauch sind nicht automatisch dasselbe.",
+        items: [
+          ["Einzahlung / Auszahlung", "Veränderung des Zahlungsmittelbestands."],
+          ["Einnahme / Ausgabe", "Veränderung des Geldvermögens: Zahlungsmittel + Forderungen − Verbindlichkeiten."],
+          ["Ertrag / Aufwand", "Wertzuwachs bzw. Wertverzehr einer Periode mit Wirkung auf das Reinvermögen."],
+          ["Leistung / Kosten", "Betriebsbezogene, bewertete Leistungserstellung bzw. Güter- und Leistungsverbräuche der Periode."]
+        ],
+        pages: "278–282, 306",
+        tip: "Immer fragen: Geht es um Zahlung, Geldvermögen, Periodenerfolg oder Betriebszweck?",
+        example: "Eigene Beispiele ohne Umsatzsteuer: Materialkauf auf Ziel = Ausgabe, noch keine Auszahlung. Begleichung der alten Lieferantenrechnung = Auszahlung, keine neue Ausgabe. Späterer Materialverbrauch = Aufwand und bei normalem Betriebsbezug Kosten. Eine Spende ist Aufwand, aber keine betriebliche Kostenposition."
+      },
+      {
+        c: 4,
+        t: "Bilanz & GuV",
+        lead: "Vermögen, Finanzierung und Erfolg hängen zusammen.",
+        items: [
+          ["Aktiva", "Mittelverwendung: Anlage- und Umlaufvermögen."],
+          ["Passiva", "Mittelherkunft: Eigen- und Fremdkapital."],
+          ["Bilanzgleichung", "Vermögen = Eigenkapital + Fremdkapital."],
+          ["GuV", "Erträge − Aufwendungen = Gewinn oder Verlust der Periode."]
+        ],
+        pages: "284–297",
+        tip: "Ein Kredit erhöht Zahlungsmittel und Schulden; die Aufnahme selbst ist kein Gewinn.",
+        example: "Eigenes Beispiel: Maschine 60.000 € + Bank 40.000 € = 100.000 € Vermögen. Finanziert durch 40.000 € Eigenkapital + 60.000 € Fremdkapital. Beide Bilanzseiten sind gleich groß. Die Folien ordnen zusätzlich Buchführungsgrundsätze sowie HGB, IFRS und steuerliche Rechnung ein."
+      },
+      {
+        c: 4,
+        t: "Kostenrechnung in drei Fragen",
+        lead: "Welche Kosten? Wo? Wofür?",
+        items: [
+          ["Kostenarten", "Welche Kosten sind entstanden, etwa Material, Personal oder Abschreibungen?"],
+          ["Kostenstellen", "Wo sind Kosten entstanden, etwa in Einkauf, Fertigung oder Verwaltung?"],
+          ["Kostenträger", "Für welches Produkt, welchen Auftrag oder welche Leistung?"],
+          ["BAB & Kalkulation", "Gemeinkosten werden über Kostenstellen verteilt; Zuschlagssätze unterstützen die Zuordnung zu Kostenträgern."]
+        ],
+        pages: "299–314",
+        tip: "Einzelkosten sind direkt zurechenbar; Gemeinkosten benötigen eine sachgerechte Verteilung.",
+        example: "Eigenes Beispiel: Holz lässt sich einem Tisch direkt zurechnen. Hallenmiete wird zunächst einem Bereich und dann über einen Verteilungsschlüssel den Produkten zugerechnet. Fix/variabel und Einzel-/Gemeinkosten sind unterschiedliche Einteilungen."
+      },
+      {
+        c: 4,
+        t: "Kosten, Deckungsbeitrag, Gewinn",
+        lead: "Ein einfaches Modell macht die Wirkung der Absatzmenge sichtbar.",
+        items: [
+          ["Kostenfunktion", "K(x) = Fixkosten + variable Stückkosten × Menge."],
+          ["Erlösfunktion", "E(x) = Stückpreis × verkaufte Menge."],
+          ["Deckungsbeitrag", "Stückpreis − variable Stückkosten; Gesamtdeckungsbeitrag deckt zunächst Fixkosten."],
+          ["Gewinnschwelle", "Fixkosten ÷ Stückdeckungsbeitrag, wenn der Stückdeckungsbeitrag positiv ist."]
+        ],
+        pages: "301–307; ergänzend 254",
+        tip: "Das lineare Modell setzt konstante Preise und variable Stückkosten voraus.",
+        example: "Eigene Rechenvertiefung: Bei 10.000 € Fixkosten, 50 € Preis und 30 € variablen Stückkosten beträgt der Deckungsbeitrag 20 €. Break-even: 500 Stück. Bei 600 Stück entsteht ein Gewinn von 2.000 €. Die interaktive Rechenhilfe erlaubt eigene Werte."
+      },
+      {
+        c: 4,
+        t: "Finanzierung: Woher kommt Kapital?",
+        lead: "Herkunft des Geldes und Rechtsstellung des Kapitalgebers getrennt betrachten.",
+        items: [
+          ["Innen / Außen", "Innen: Mittel aus dem betrieblichen Prozess oder Vermögensumschichtung. Außen: Mittel von außerhalb."],
+          ["Eigen / Fremd", "Eigenkapital ist Beteiligungskapital; Fremdkapital begründet grundsätzlich einen Rückzahlungsanspruch."],
+          ["Innenfinanzierung", "Einbehaltene Gewinne, Rückstellungs- und Abschreibungseffekte, Vermögensumschichtung."],
+          ["Außenfinanzierung", "Beteiligungen und Kredite; ergänzend behandelt die Vorlage u. a. Leasing und Factoring."]
+        ],
+        pages: "317–324",
+        tip: "Innenfinanzierung ist nicht automatisch Eigenfinanzierung.",
+        example: "Eigene Beispiele: Einbehaltener Gewinn = innen/eigen. Neue Eigentümereinlage = außen/eigen. Bankdarlehen = außen/fremd. Abschreibungen erzeugen allein keinen Geldzufluss; ein Finanzierungseffekt setzt entsprechende Einnahmen aus dem Umsatzprozess voraus."
+      },
+      {
+        c: 4,
+        t: "Investition: Wofür wird Kapital eingesetzt?",
+        lead: "Heute binden wir Mittel, um künftig Nutzen zu erhalten.",
+        items: [
+          ["Investitionsarten", "Etwa Ersatz oder Erweiterung; materielle und immaterielle Investitionen."],
+          ["Planung", "Bedarf und Ziele festlegen, Alternativen ermitteln, beurteilen, entscheiden, umsetzen und kontrollieren."],
+          ["Statische Verfahren", "Kosten-, Gewinn- und Rentabilitätsvergleich sowie Amortisationsrechnung; arbeiten vereinfacht mit Perioden- bzw. Durchschnittswerten."],
+          ["Grenzen", "Zahlungszeitpunkte und unterschiedliche Lebensdauern werden nur unzureichend erfasst."]
+        ],
+        pages: "327–339",
+        tip: "Amortisation fragt: Wann ist der Kapitaleinsatz rechnerisch zurückgeflossen?",
+        example: "Eigene Vereinfachung: 60.000 € Anfangsauszahlung bei jährlich konstant 15.000 € Netto-Rückfluss amortisieren sich in 4 Jahren. Restwert, Zins und Schwankungen sind hier nicht berücksichtigt."
+      },
+      {
+        c: 4,
+        t: "Kapitalwert & Abzinsung",
+        lead: "Ein zukünftiger Euro ist bei positivem Kalkulationszins heute weniger wert.",
+        items: [
+          ["Barwert", "Zahlungsüberschuss im Jahr t ÷ (1 + Zinssatz)^t."],
+          ["Kapitalwert", "Summe aller abgezinsten Nettozahlungen einschließlich der Anfangsauszahlung."],
+          ["Entscheidung", "Positiver Kapitalwert: Die Investition übertrifft im Modell die geforderte Verzinsung."],
+          ["Interner Zinsfuß", "Der Zinssatz, bei dem der Kapitalwert null wird; bei ungewöhnlichen Zahlungsreihen sind Besonderheiten möglich."]
+        ],
+        pages: "340–346",
+        tip: "Dynamische Verfahren berücksichtigen Zahlungszeitpunkte, bleiben aber von Prognosen abhängig.",
+        example: "Eigenes Beispiel: 1.000 € heute investieren, in einem Jahr 1.100 € zurückbekommen. Bei 5 % Kalkulationszins: −1.000 + 1.100/1,05 = +47,62 € Kapitalwert. Das ist ein heutiger Mehrwert, kein Kontostand."
+      },
+      {
+        c: 4,
+        t: "Controlling ist Steuerungsunterstützung",
+        lead: "Zahlen sollen Entscheidungen verbessern.",
+        items: [
+          ["Planen", "Ziele, Budgets und erwartete Ergebnisse abstimmen."],
+          ["Informieren & analysieren", "Relevante Daten aufbereiten und Ursachen von Abweichungen untersuchen."],
+          ["Steuern", "Handlungsalternativen aufzeigen und Maßnahmen begleiten."],
+          ["Regelkreis", "Plan → Umsetzung → Ist-Erfassung → Vergleich → Anpassung."]
+        ],
+        pages: "348–353",
+        tip: "Controlling ist mehr als Kontrolle: Es richtet den Blick auch nach vorn.",
+        example: "Eigenes Beispiel: Die Materialkosten liegen 8 % über Plan. Controlling trennt Preis-, Mengen- und Ausschusseffekte, damit die Führung gezielt reagieren kann."
+      },
+      {
+        c: 5,
+        t: "Unternehmensziele",
+        lead: "Ziele geben Orientierung und machen Ergebnisse beurteilbar.",
+        items: [
+          ["Sachziele", "Welche Leistung soll in welcher Menge, Qualität, Zeit und an welchem Ort entstehen?"],
+          ["Formalziele", "Welche wirtschaftlichen Ergebnisse werden angestrebt, etwa Gewinn, Rentabilität oder Liquidität?"],
+          ["Zielhierarchie", "Oberziele werden in Bereichs- und Unterziele übersetzt."],
+          ["Zielbeziehungen", "Komplementär: fördern sich. Konkurrierend: behindern sich. Indifferent: beeinflussen sich nicht."]
+        ],
+        pages: "369–374",
+        tip: "Effektivität: Ziel erreichen. Effizienz: angemessener Ressourceneinsatz.",
+        example: "Eigene Beispiele: Weniger Ausschuss kann Kosten und Ressourcenverbrauch senken (komplementär). Größere Sicherheitsbestände fördern Lieferfähigkeit, binden aber Kapital (Zielkonflikt). Ökonomische, soziale und ökologische Ziele gemeinsam betrachten."
+      },
+      {
+        c: 5,
+        t: "Management & Führung",
+        lead: "Management bezeichnet Aufgaben und die Personen, die sie wahrnehmen.",
+        items: [
+          ["Führungsaufgaben", "Ziele festlegen, Strategien entwickeln, Ressourcen organisieren und Menschen führen."],
+          ["MbO / MbE", "Management by Objectives: über Ziele führen. Management by Exception: bei wesentlichen Abweichungen eingreifen."],
+          ["MbD / MbS", "Management by Delegation: Aufgaben und Befugnisse übertragen. Management by Systems: über abgestimmte Systeme steuern."],
+          ["Kultur & Stil", "Werte und Denkhaltungen prägen das Verhalten; situatives Führen passt Unterstützung und Anleitung der Situation an."]
+        ],
+        pages: "376–390",
+        tip: "Lean Management reduziert Verschwendung; TQM verankert Qualität im gesamten Unternehmen.",
+        example: "Eigene Beispiele: MbO = ein vereinbartes Termintreueziel. MbE = Eingriff erst bei Überschreitung einer festgelegten Abweichungsgrenze. Delegation verlangt passende Befugnisse und klare Verantwortung."
+      },
+      {
+        c: 5,
+        t: "Planung & Entscheidungen",
+        lead: "Planung bereitet Handeln vor und liefert den Maßstab für spätere Kontrolle.",
+        items: [
+          ["Strategisch", "Langfristige Richtung, Märkte, Erfolgspotenziale und wesentliche Fähigkeiten."],
+          ["Operativ", "Konkrete Maßnahmen, Mengen, Termine und Budgets."],
+          ["Entscheidungssituation", "Bei Sicherheit sind Folgen bekannt; bei Risiko können Wahrscheinlichkeiten berücksichtigt werden; bei Ungewissheit fehlen verlässliche Wahrscheinlichkeiten."],
+          ["Prozess", "Problem klären → Ziele und Alternativen → bewerten → entscheiden → umsetzen → kontrollieren."]
+        ],
+        pages: "392–396",
+        tip: "Eine genaue Rechnung macht unsichere Annahmen nicht automatisch verlässlich.",
+        example: "Eigenes Beispiel: Einstieg in einen neuen Markt = strategisch. Fertigungsplan für nächste Woche = operativ. Beide Ebenen müssen zueinander passen."
+      },
+      {
+        c: 5,
+        t: "Entscheidungsregeln bei Ungewissheit",
+        lead: "Welche Alternative erscheint gut, wenn der Umweltzustand offen ist?",
+        items: [
+          ["Maximin", "Wähle bei Gewinnwerten das beste der jeweils schlechtesten Ergebnisse: vorsichtige Regel."],
+          ["Maximax", "Wähle das größte erreichbare Ergebnis: optimistische Regel."],
+          ["Hurwicz / Laplace", "Hurwicz gewichtet bestes und schlechtestes Ergebnis. Laplace behandelt alle Umweltzustände als gleich wahrscheinlich."],
+          ["Savage-Niehans", "Minimiere das größte Bedauern: den Abstand zur besten Alternative je Umweltzustand."]
+        ],
+        pages: "396",
+        tip: "Die Regel bildet eine Haltung zur Unsicherheit ab; sie ist keine sichere Vorhersage.",
+        example: "Eigenes Beispiel: Alternative A liefert je nach Zustand 2 oder 9, B liefert 5 oder 6. Maximin wählt B (5 statt 2); Maximax wählt A (9 statt 6). Bei bekannten Wahrscheinlichkeiten kann der Erwartungswert helfen; die Risikoneigung bleibt zusätzlich relevant."
+      },
+      {
+        c: 5,
+        t: "Organisation: Wer macht was – und wie?",
+        lead: "Strukturen und Abläufe koordinieren die Arbeitsteilung.",
+        items: [
+          ["Aufbauorganisation", "Stellen, Abteilungen, Zuständigkeiten und Weisungsbeziehungen."],
+          ["Ablauforganisation", "Sachliche, räumliche und zeitliche Reihenfolge der Arbeit."],
+          ["Formen", "Einlinie, Mehrlinie, Stablinie sowie funktionale, divisionale und Matrixstrukturen."],
+          ["Kongruenz", "Aufgabe, Kompetenz und Verantwortung sollten zueinander passen."]
+        ],
+        pages: "172–176, 398–401",
+        tip: "Stabsstellen beraten die Linie; sie haben grundsätzlich keine eigene Linienweisung.",
+        example: "Eigene Beispiele: Funktional nach Einkauf/Produktion/Vertrieb; divisional nach Produktbereichen; Matrix kombiniert zwei Gliederungsdimensionen und erfordert klare Abstimmung."
+      },
+      {
+        c: 5,
+        t: "Kontrolle & Personal",
+        lead: "Gute Steuerung verbindet Zielvergleich mit handlungsfähigen Menschen.",
+        items: [
+          ["Kontrolle", "Soll und Ist vergleichen, Abweichungen erklären und Maßnahmen ableiten."],
+          ["Vergleichsmaßstäbe", "Vorperioden, ähnliche Tätigkeiten oder andere Unternehmen als Benchmark."],
+          ["Personalprozess", "Bedarf → Beschaffung → Einsatz → Entwicklung → gegebenenfalls Freistellung."],
+          ["Motivation", "Monetäre und nichtmonetäre Anreize; Arbeitsbedingungen, Anerkennung und Entwicklungsmöglichkeiten."]
+        ],
+        pages: "403–407",
+        tip: "Die Personalseiten der PDF sind Arbeitsaufträge; diese Prozessdarstellung ist eine kurze Lernergänzung.",
+        example: "Eigene Leitfragen: Wie viele Mitarbeitende werden gebraucht (quantitativ)? Welche Kenntnisse (qualitativ)? Wie werden Einarbeitung, Weiterbildung und Zusammenarbeit gestaltet? Mitbestimmung und Arbeitnehmerrechte sind ebenfalls Themen der Vorlage."
+      },
+      {
+        c: 6,
+        t: "Formeln zum Wiederholen",
+        lead: "Erst Begriffe und Einheiten klären, dann einsetzen.",
+        items: [
+          ["Leistung & Kapital", "Produktivität = Outputmenge/Inputmenge · Wirtschaftlichkeit = Outputwert/Inputwert · EK-Rentabilität = Gewinn/EK × 100 %."],
+          ["Lager", "Ø Bestand = (Anfang + Ende)/2 · Umschlag = Jahresabgang/Ø Bestand · Lagerdauer = 360/Umschlag."],
+          ["Kostenmodell", "DB je Stück = Preis − variable Stückkosten · Gewinn = DB × Menge − Fixkosten · Break-even = Fixkosten/DB."],
+          ["Investition", "Kapitalwert = −Anfangsauszahlung + Summe der abgezinsten künftigen Nettozahlungen."]
+        ],
+        pages: "34, 202, 254, 301–307, 333–342",
+        tip: "Rechenmodelle gelten nur unter ihren jeweiligen Annahmen.",
+        example: "Die Break-even-Darstellung und eigenen Zahlenbeispiele dienen als Lernergänzung. Nutze den Bereich „Rechnen“, um Auswirkungen veränderter Eingaben unmittelbar zu sehen."
+      },
+      {
+        c: 6,
+        t: "Dein letzter Selbstcheck",
+        lead: "Erklären können ist mehr als Wiedererkennen.",
+        items: [
+          ["Begriffe", "Kannst du Bedürfnis, Bedarf, Nachfrage und Ressourcen an einem Beispiel erklären?"],
+          ["Zusammenhänge", "Kannst du von der Beschaffung über Produktion und Absatz bis zum Geldfluss argumentieren?"],
+          ["Rechnen", "Kannst du Produktivität, Rentabilität, Lagerumschlag und Kapitalwert korrekt unterscheiden?"],
+          ["Entscheiden", "Kannst du Standort, Lieferant, Investition oder Organisationsform mit mehreren Kriterien beurteilen?"]
+        ],
+        pages: "Gesamte Vorlage",
+        tip: "Nutze das Quiz; bearbeite danach die Originalaufgaben und Vorlesungsergänzungen.",
+        example: "Hinweis aus S. 2 der Vorlage: 60 Minuten Klausur mit 60 möglichen Punkten; gemeinsame Wertung mit Marketing (30 Punkte) und Seminar (30 Punkte). Verbindlich sind die aktuellen Informationen der Lehrveranstaltung. Die Zusammenfassung ist keine Garantie für den Prüfungsumfang."
+      }
+    ];
+
+    const chapters = [
+      "Start & Überblick",
+      "Grundlagen",
+      "Unternehmensgestaltung",
+      "Betriebliche Funktionen",
+      "Informationen & Finanzen",
+      "Steuerung & Personal",
+      "Formeln & Selbstcheck"
+    ];
+
+    // Aufbau: Kapitel, Frage, Antwortmöglichkeiten, richtige Antwort (0–2), Erklärung
+    const quiz = [
+      [
+        1,
+        "Was ist eine Ressource?",
+        [
+          "Nur ein fertiges Konsumgut",
+          "Ein einsetzbares Mittel wie Zeit, Geld oder Wissen",
+          "Ausschließlich ein Rohstoff"
+        ],
+        1,
+        "Ressourcen ermöglichen wirtschaftliches Handeln und sind häufig knapp."
+      ],
+      [
+        1,
+        "100 Bauteile mit möglichst wenig Material: Welches Prinzip?",
+        ["Maximum", "Minimum", "Keine Form des ökonomischen Prinzips"],
+        1,
+        "Das Ergebnis ist vorgegeben; der Einsatz soll minimiert werden."
+      ],
+      [
+        1,
+        "120 Stück in 8 Stunden: Wie hoch ist die Arbeitsproduktivität?",
+        ["15 Stück je Stunde", "960 Stück je Stunde", "6,67 %"],
+        0,
+        "120 ÷ 8 = 15 Stück je Arbeitsstunde."
+      ],
+      [
+        1,
+        "60.000 € Gewinn bei 300.000 € Eigenkapital ergeben …",
+        ["5 % EK-Rentabilität", "50 % EK-Rentabilität", "20 % EK-Rentabilität"],
+        2,
+        "60.000 ÷ 300.000 × 100 = 20 %."
+      ],
+      [
+        2,
+        "Wie wird ein Nutzwert berechnet?",
+        [
+          "Gewicht × Punktwert je Kriterium, dann summieren",
+          "Alle Punktwerte ohne Gewicht addieren",
+          "Nur das stärkste Kriterium verwenden"
+        ],
+        0,
+        "Gewichte bilden die relative Bedeutung der Kriterien ab."
+      ],
+      [
+        2,
+        "Wer überwacht den Vorstand einer AG?",
+        ["Der Einkauf", "Der Aufsichtsrat", "Jeder Kunde"],
+        1,
+        "Leitung und Überwachung sind grundsätzlich getrennte Aufgaben."
+      ],
+      [
+        2,
+        "Hersteller und Zulieferer verbinden sich. Welche Richtung?",
+        ["Horizontal", "Lateral", "Vertikal"],
+        2,
+        "Sie liegen auf aufeinanderfolgenden Wertschöpfungsstufen."
+      ],
+      [
+        2,
+        "Was unterscheidet Konzern und Fusion im Kern?",
+        [
+          "Im Konzern bleiben Unternehmen rechtlich selbstständig",
+          "Ein Konzern hat niemals eine einheitliche Leitung",
+          "Eine Fusion verändert die rechtliche Selbstständigkeit nie"
+        ],
+        0,
+        "Bei einer Fusion verliert mindestens ein Unternehmen seine rechtliche Selbstständigkeit."
+      ],
+      [
+        3,
+        "Was bewertet die XYZ-Analyse?",
+        [
+          "Die Rechtsform",
+          "Die Regelmäßigkeit und Prognostizierbarkeit des Bedarfs",
+          "Nur den Einkaufspreis"
+        ],
+        1,
+        "ABC beurteilt die Wertbedeutung; XYZ den Bedarfsverlauf."
+      ],
+      [
+        3,
+        "Einziger am Markt möglicher Lieferant: Das ist …",
+        ["Multiple Sourcing", "Sole Sourcing", "Double Sourcing"],
+        1,
+        "Single Sourcing ist die bewusste Auswahl eines Lieferanten; Sole Sourcing folgt dem fehlenden Angebot anderer Anbieter."
+      ],
+      [
+        3,
+        "120.000 € Verbrauch / 20.000 € Durchschnittsbestand ergeben …",
+        [
+          "6 Umschläge, 60 Tage Lagerdauer",
+          "60 Umschläge, 6 Tage Lagerdauer",
+          "6 Umschläge, 360 Tage Lagerdauer"
+        ],
+        0,
+        "Umschlag = 6; nach der 360-Tage-Konvention gilt 360 ÷ 6 = 60 Tage."
+      ],
+      [
+        3,
+        "Was bedeutet FEFO?",
+        [
+          "Die teuerste Ware zuerst",
+          "Die zuletzt gelieferte Ware zuerst",
+          "Die zuerst ablaufende Ware zuerst"
+        ],
+        2,
+        "First Expired – First Out orientiert sich am Ablaufdatum."
+      ],
+      [
+        4,
+        "Ein Kunde bezahlt eine Forderung aus dem Vormonat. Das ist …",
+        [
+          "Eine Einzahlung, aber keine neue Einnahme",
+          "Eine neue Einnahme ohne Einzahlung",
+          "Automatisch ein neuer Ertrag"
+        ],
+        0,
+        "Zahlungsmittel steigen und Forderungen sinken: Das Geldvermögen ändert sich durch die Begleichung nicht."
+      ],
+      [
+        4,
+        "Welche Frage beantwortet die Kostenstellenrechnung?",
+        ["Welche Kostenart?", "Wo sind die Kosten entstanden?", "Welcher Zahlungszeitpunkt?"],
+        1,
+        "Kostenarten = welche; Kostenstellen = wo; Kostenträger = wofür."
+      ],
+      [
+        4,
+        "Ein Bankdarlehen ist typischerweise …",
+        [
+          "Innen- und Eigenfinanzierung",
+          "Außen- und Eigenfinanzierung",
+          "Außen- und Fremdfinanzierung"
+        ],
+        2,
+        "Das Kapital kommt von außerhalb und ist rückzahlbar."
+      ],
+      [
+        4,
+        "Was bedeutet ein positiver Kapitalwert?",
+        [
+          "Die geforderte Verzinsung wird im Modell übertroffen",
+          "Das Unternehmen hat immer genügend Bargeld",
+          "Die Investition ist risikolos"
+        ],
+        0,
+        "Der Kapitalwert ist der heutige Mehrwert gegenüber der unterstellten Vergleichsverzinsung."
+      ],
+      [
+        5,
+        "Effektivität bedeutet …",
+        ["Das angestrebte Ziel erreichen", "Nur möglichst billig arbeiten", "Immer mehr produzieren"],
+        0,
+        "Effizienz betrifft das Verhältnis von Ergebnis und Ressourceneinsatz."
+      ],
+      [
+        5,
+        "Welche Technik führt durch Zielvereinbarungen?",
+        ["Management by Exception", "Management by Objectives", "Management by Delegation"],
+        1,
+        "MbO stellt Ziele in den Mittelpunkt. MbE reagiert auf wesentliche Abweichungen."
+      ],
+      [
+        5,
+        "Die zeitliche Reihenfolge der Auftragsbearbeitung gehört zur …",
+        ["Rechtsform", "Aufbauorganisation", "Ablauforganisation"],
+        2,
+        "Die Aufbauorganisation regelt insbesondere Stellen und Zuständigkeiten."
+      ],
+      [
+        5,
+        "Maximin bei Gewinnwerten bedeutet …",
+        [
+          "Das beste der schlechtesten Ergebnisse wählen",
+          "Nur das größte mögliche Ergebnis betrachten",
+          "Die Alternative zufällig auswählen"
+        ],
+        0,
+        "Die vorsichtige Regel vergleicht zuerst die jeweils ungünstigsten Ergebnisse."
+      ]
+    ];
+
+    const $ = id => document.getElementById(id);
+
+    const esc = value => String(value).replace(
+      /[&<>"']/g,
+      character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[character]
+    );
+
+    let state = {
+      index: 0,
+      done: [],
+      answers: {}
+    };
+
+    let storage = true;
+    let view = "slides";
+    let filter = 0;
+
+    try {
+      const old = JSON.parse(localStorage.getItem("bwl-tm26-v1"));
+
+      if (old && typeof old === "object") {
+        state.index = Number.isInteger(old.index)
+          ? Math.max(0, Math.min(slides.length - 1, old.index))
+          : 0;
+
+        state.done = Array.isArray(old.done)
+          ? old.done.filter(i => Number.isInteger(i) && i >= 0 && i < slides.length)
+          : [];
+
+        state.answers = old.answers && typeof old.answers === "object"
+          ? old.answers
+          : {};
+      }
+    } catch {
+      storage = false;
+    }
+
+    function save() {
+      try {
+        localStorage.setItem("bwl-tm26-v1", JSON.stringify(state));
+      } catch {
+        storage = false;
+      }
+
+      $("saveinfo").textContent = storage
+        ? "Dein Fortschritt bleibt lokal in diesem Browser."
+        : "Speichern ist hier nicht verfügbar. Fortschritt bleibt nur bis zum Schließen erhalten.";
+    }
+
+    function progress() {
+      const count = new Set(state.done).size;
+
+      $("learned").textContent = `${count} von ${slides.length} gelernt`;
+      $("learnbar").style.width = `${count / slides.length * 100}%`;
+
+      $("chapters").innerHTML = chapters.map((chapter, index) => `
+        <button
+          data-chapter="${index}"
+          aria-current="${slides[state.index].c === index}"
+        >
+          <span>${String(index).padStart(2, "0")}</span>
+          ${esc(chapter)}
+        </button>
+      `).join("");
+    }
+
+    function article(slide, index, all = false) {
+      const heading = all ? "h2" : "h1";
+
+      return `
+        <article class="slide ${index === 0 ? "hero" : ""}">
+          <span class="tag">${esc(chapters[slide.c])}</span>
+
+          <${heading} ${all ? "" : 'id="slideTitle" tabindex="-1"'}>
+            ${esc(slide.t)}
+          </${heading}>
+
+          <p class="lead">${esc(slide.lead)}</p>
+
+          <div class="cards">
+            ${slide.items.map(([title, text]) => `
+              <section class="card">
+                <h3>${esc(title)}</h3>
+                <p>${esc(text)}</p>
+              </section>
+            `).join("")}
+          </div>
+
+          <div class="tip">
+            <b>MERKEN</b>
+            ${esc(slide.tip)}
+          </div>
+
+          <details>
+            <summary>
+              ${index === 0 ? "Quelle & Hinweise" : "Beispiel & Vertiefung öffnen"}
+            </summary>
+            <p>${esc(slide.example)}</p>
+          </details>
+
+          <div class="source">
+            PDF-Seiten ${esc(slide.pages)} · Lernfolie ${index + 1} / ${slides.length}
+          </div>
+        </article>
+      `;
+    }
+
+    function render() {
+      progress();
+
+      document.querySelectorAll("[data-view]").forEach(button => {
+        button.setAttribute("aria-pressed", button.dataset.view === view);
+      });
+
+      $("screen").className = view === "read" ? "readmode" : "";
+
+      if (view === "slides") {
+        $("screen").innerHTML = `
+          <div class="topline">
+            <span>LERNFOLIEN / ${String(slides[state.index].c).padStart(2, "0")}</span>
+            <span>Pfeiltasten ← → zum Blättern</span>
+          </div>
+
+          ${article(slides[state.index], state.index)}
+
+          <div class="bottom">
+            <button
+              class="done"
+              id="done"
+              aria-pressed="${state.done.includes(state.index)}"
+            >
+              ${state.done.includes(state.index) ? "✓ Gelernt" : "Als gelernt markieren"}
+            </button>
+
+            <span class="counter">${state.index + 1} / ${slides.length}</span>
+
+            <div class="nav">
+              <button
+                id="prev"
+                ${state.index === 0 ? "disabled" : ""}
+                aria-label="Vorherige Folie"
+              >
+                ← Zurück
+              </button>
+
+              <button
+                id="next"
+                class="primary"
+                ${state.index === slides.length - 1 ? "disabled" : ""}
+              >
+                Weiter →
+              </button>
+            </div>
+          </div>
+        `;
+      } else if (view === "read") {
+        $("screen").innerHTML = `
+          <h1>Alles in Ruhe lesen.</h1>
+          <p class="lead">Die vollständige Lernfassung – Kapitel für Kapitel.</p>
+          ${slides.map((slide, index) => article(slide, index, true)).join("")}
+        `;
+      } else if (view === "quiz") {
+        renderQuiz();
+      } else if (view === "calc") {
+        renderCalc();
+      } else {
+        renderHelp();
+      }
+    }
+
+    function go(index) {
+      state.index = Math.max(0, Math.min(slides.length - 1, index));
+      view = "slides";
+
+      save();
+      render();
+
+      $("searchResults").innerHTML = "";
+      $("search").value = "";
+
+      document.body.classList.remove("menu-open");
+      $("menu").setAttribute("aria-expanded", "false");
+
+      $("main").scrollIntoView({ block: "start" });
+      $("slideTitle").focus({ preventScroll: true });
+    }
+
+    function renderQuiz() {
+      const ids = quiz
+        .map((question, index) => index)
+        .filter(index => !filter || quiz[index][0] === filter);
+
+      const attempted = ids.filter(index => Number.isInteger(state.answers[index]));
+
+      const correct = attempted.filter(
+        index => state.answers[index] === quiz[index][3]
+      ).length;
+
+      $("screen").innerHTML = `
+        <h1>Wissen anwenden.</h1>
+
+        <p class="lead">
+          20 eigene Übungsfragen mit Erklärungen.
+          Jede Frage zählt einmal; ein Neustart ermöglicht einen neuen Versuch.
+        </p>
+
+        <label>
+          Kapitel filtern
+          <select id="quizFilter">
+            <option value="0">Alle Kapitel</option>
+            ${chapters.slice(1, 6).map((chapter, index) => `
+              <option value="${index + 1}" ${filter === index + 1 ? "selected" : ""}>
+                ${esc(chapter)}
+              </option>
+            `).join("")}
+          </select>
+        </label>
+
+        <div class="score" style="margin-top:18px" role="status">
+          ${correct} von ${attempted.length} beantworteten Fragen richtig
+          · ${ids.length - attempted.length} offen
+        </div>
+
+        ${ids.map(index => {
+          const question = quiz[index];
+          const answer = state.answers[index];
+          const answered = Number.isInteger(answer);
+
+          return `
+            <section class="qcard">
+              <span class="eyebrow">
+                ${esc(chapters[question[0]])} · Frage ${index + 1}
+              </span>
+
+              <h2 style="font-size:23px;margin-top:10px">
+                ${esc(question[1])}
+              </h2>
+
+              <div class="answers">
+                ${question[2].map((text, answerIndex) => `
+                  <button
+                    data-q="${index}"
+                    data-a="${answerIndex}"
+                    class="${answer === answerIndex ? "chosen" : ""}"
+                    ${answered ? "disabled" : ""}
+                  >
+                    ${String.fromCharCode(65 + answerIndex)} · ${esc(text)}
+                  </button>
+                `).join("")}
+              </div>
+
+              ${answered ? `
+                <div
+                  class="feedback ${answer !== question[3] ? "wrong" : ""}"
+                  role="status"
+                >
+                  <b>${answer === question[3] ? "Richtig." : "Noch nicht richtig."}</b>
+                  ${answer !== question[3]
+                    ? `Richtig ist ${String.fromCharCode(65 + question[3])}. `
+                    : ""}
+                  ${esc(question[4])}
+                </div>
+              ` : ""}
+            </section>
+          `;
+        }).join("")}
+
+        <button id="resetQuiz">Alle Quizantworten zurücksetzen</button>
+      `;
+    }
+
+    function field(id, label, value, min = 0, step = "any") {
+      return `
+        <label for="${id}">
+          ${label}
+          <input
+            type="number"
+            id="${id}"
+            value="${value}"
+            min="${min}"
+            step="${step}"
+            inputmode="decimal"
+          >
+        </label>
+      `;
+    }
+
+    function renderCalc() {
+      $("screen").innerHTML = `
+        <h1>Zahlen greifbar machen.</h1>
+
+        <p class="lead">
+          Eigene Rechenbeispiele. Verändere die Werte und beobachte das Ergebnis.
+        </p>
+
+        <div class="tools">
+          <section class="qcard">
+            <h2>Gewinnschwelle</h2>
+
+            <p class="small">
+              Lineares Einproduktmodell, gleiche produzierte und verkaufte Menge,
+              konstante Stückwerte; ohne Steuern.
+            </p>
+
+            <div class="fields">
+              ${field("price", "Preis je Stück (€)", 50)}
+              ${field("variable", "Variable Kosten je Stück (€)", 30)}
+              ${field("fixed", "Fixkosten (€)", 10000)}
+              ${field("quantity", "Absatzmenge (Stück)", 600, 0, 1)}
+            </div>
+
+            <div id="breakResult" class="calc-result" aria-live="polite"></div>
+          </section>
+
+          <section class="qcard">
+            <h2>Lagerumschlag</h2>
+
+            <p class="small">
+              Jahresverbrauch und Durchschnittsbestand auf derselben Wertbasis.
+              360-Tage-Konvention wie in der Vorlage.
+            </p>
+
+            <div class="fields">
+              ${field("usage", "Jährlicher Verbrauch (€)", 120000)}
+              ${field("stock", "Durchschnittlicher Lagerbestand (€)", 20000)}
+            </div>
+
+            <div id="stockResult" class="calc-result" aria-live="polite"></div>
+          </section>
+
+          <section class="qcard">
+            <h2>Kapitalwert</h2>
+
+            <p class="small">
+              Konstanter jährlicher Netto-Rückfluss am Jahresende, kein Restwert.
+              Zinssatz ≥ 0; Laufzeit 1 bis 100 Jahre.
+            </p>
+
+            <div class="fields">
+              ${field("investment", "Anfangsauszahlung (€)", 10000)}
+              ${field("cash", "Netto-Rückfluss pro Jahr (€)", 3000, -100000000)}
+              ${field("rate", "Kalkulationszins (%)", 5)}
+              ${field("years", "Nutzungsdauer (Jahre)", 4, 1, 1)}
+            </div>
+
+            <div id="npvResult" class="calc-result" aria-live="polite"></div>
+          </section>
+        </div>
+      `;
+
+      calculate();
+    }
+
+    const fmt = (value, digits = 2) => value.toLocaleString("de-DE", {
+      minimumFractionDigits: digits,
+      maximumFractionDigits: digits
+    });
+
+    function val(id) {
+      return $(id).value.trim() === "" ? NaN : Number($(id).value);
+    }
+
+    function calculate() {
+      const price = val("price");
+      const variable = val("variable");
+      const fixed = val("fixed");
+      const quantity = val("quantity");
+
+      if (
+        [price, variable, fixed, quantity].some(value => !Number.isFinite(value) || value < 0) ||
+        !Number.isInteger(quantity)
+      ) {
+        $("breakResult").textContent =
+          "Bitte gültige nichtnegative Werte und eine ganze Stückzahl eingeben.";
+      } else {
+        const db = price - variable;
+        const profit = db * quantity - fixed;
+        const breakEven = db > 0 ? fixed / db : null;
+
+        let explanation;
+
+        if (breakEven !== null) {
+          explanation = `
+            Gewinnschwelle: ${fmt(breakEven)} Stück;
+            mindestens ${fmt(Math.ceil(breakEven), 0)} ganze Stück
+            für ein nichtnegatives Ergebnis.
+          `;
+        } else if (db === 0 && fixed === 0) {
+          explanation = "Ergebnis ist bei jeder Menge null.";
+        } else {
+          explanation =
+            "Kein positiver Stückdeckungsbeitrag: Mehrabsatz kann positive Fixkosten nicht decken.";
+        }
+
+        $("breakResult").innerHTML = `
+          Gewinn bei ${fmt(quantity, 0)} Stück
+          <strong>${fmt(profit)} €</strong>
+          Stückdeckungsbeitrag: ${fmt(db)} €<br>
+          ${explanation}
+
+          ${breakEven > 0 ? `
+            <div class="bar" aria-hidden="true">
+              <i style="width:${Math.min(100, quantity / breakEven * 100)}%"></i>
+            </div>
+            <small>
+              ${fmt(quantity / breakEven * 100, 0)} %
+              der rechnerischen Gewinnschwelle erreicht
+            </small>
+          ` : ""}
+        `;
+      }
+
+      const usage = val("usage");
+      const stock = val("stock");
+
+      if (
+        !Number.isFinite(usage) ||
+        !Number.isFinite(stock) ||
+        usage <= 0 ||
+        stock <= 0
+      ) {
+        $("stockResult").textContent =
+          "Bitte für Verbrauch und Bestand positive Werte eingeben.";
+      } else {
+        $("stockResult").innerHTML = `
+          Umschläge pro Jahr
+          <strong>${fmt(usage / stock)}</strong>
+          Durchschnittliche Lagerdauer: ${fmt(360 * stock / usage)} Tage
+        `;
+      }
+
+      const investment = val("investment");
+      const cash = val("cash");
+      const rate = val("rate");
+      const years = val("years");
+
+      if (
+        ![investment, cash, rate, years].every(Number.isFinite) ||
+        investment < 0 ||
+        rate < 0 ||
+        !Number.isInteger(years) ||
+        years < 1 ||
+        years > 100
+      ) {
+        $("npvResult").textContent =
+          "Bitte gültige Werte eingeben; die Laufzeit muss 1–100 ganze Jahre betragen.";
+      } else {
+        let npv = -investment;
+
+        for (let year = 1; year <= years; year++) {
+          npv += cash / Math.pow(1 + rate / 100, year);
+        }
+
+        const interpretation = npv > 0
+          ? "Die geforderte Verzinsung wird im Modell übertroffen."
+          : npv < 0
+            ? "Die geforderte Verzinsung wird im Modell nicht erreicht."
+            : "Die geforderte Verzinsung wird genau erreicht.";
+
+        $("npvResult").innerHTML = `
+          Kapitalwert heute
+          <strong>${fmt(npv)} €</strong>
+          ${interpretation}<br>
+          <small>
+            −${fmt(investment)} € + Summe aus
+            ${fmt(cash)} € / (1 + ${fmt(rate)} %)ᵗ
+          </small>
+        `;
+      }
+    }
+
+    function renderHelp() {
+      $("screen").innerHTML = `
+        <article class="slide hosting">
+          <span class="tag">Benutzung & Veröffentlichung</span>
+
+          <h1>Dein Lernstudio überall.</h1>
+          <p class="lead">Eine HTML-Datei. Keine Installation, keine externen Bibliotheken.</p>
+
+          <h2>So lernst du damit</h2>
+
+          <p>
+            Mit „Lernfolien“ blätterst du durch die Zusammenfassung.
+            Die Kapitelnavigation und Suche führen direkt zum Thema.
+            „Lesen“ zeigt alles hintereinander.
+            „Quiz“ und „Rechnen“ helfen beim Anwenden.
+            „Drucken / PDF“ druckt die gesamte Lernfassung einschließlich der Vertiefungen.
+          </p>
+
+          <p>
+            Auf dem Computer funktionieren die Pfeiltasten.
+            Auf iPad und Smartphone nutzt du die Schaltflächen.
+            Lernfortschritt und Quizantworten werden – soweit verfügbar –
+            nur in diesem Browser gespeichert.
+            Zwischen Geräten wird nichts synchronisiert.
+          </p>
+
+          <h2>Auf GitHub Pages veröffentlichen</h2>
+
+          <ol>
+            <li>Ein Repository erstellen oder ein vorhandenes öffnen.</li>
+            <li>
+              Diese Datei mit dem Namen <code>index.html</code>
+              in das Hauptverzeichnis hochladen und committen.
+            </li>
+            <li><b>Settings → Pages → Build and deployment</b> öffnen.</li>
+            <li>
+              Unter Source <b>Deploy from a branch</b> wählen,
+              dann <b>main</b> und <b>/(root)</b> auswählen und speichern.
+            </li>
+            <li>Nach dem Build zeigt GitHub Pages den Link zur veröffentlichten Seite.</li>
+          </ol>
+
+          <p class="small">
+            Verifiziert anhand der
+            <a
+              href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site"
+              target="_blank"
+              rel="noopener"
+            >GitHub-Dokumentation</a>
+            am 05.10.2026.
+            Für diese Datei ist kein Build-Schritt nötig.
+            Das Original-PDF wird nicht benötigt oder mitgeliefert.
+          </p>
+
+          <h2>Quelle & redaktionelle Hinweise</h2>
+
+          <p>
+            Grundlagen der Betriebswirtschaftslehre, Technical Management WS 2026,
+            Prof. Dr.-Ing. Olaf Kreyenkamp, DHBW Villingen-Schwenningen;
+            hochgeladene PDF mit 413 Seiten.
+            Die 42 Folien decken die fünf Hauptkapitel verdichtet ab.
+            Organisatorische Wiederholungen, reine Beispielabbildungen
+            und umfangreiche Einzelaufgaben wurden reduziert.
+          </p>
+
+          <p>
+            Alle Beispiele sind entweder als eigene Lernbeispiele
+            oder als Beispiele aus der Vorlage bezeichnet.
+            Auf Seite 126 wurde eine falsche Nutzwertsumme erläutert.
+            Personalmanagement steht in der Vorlage überwiegend als Gruppenauftrag;
+            die knappe Prozessdarstellung ist eine Lernergänzung.
+            Enthaltene ältere Rechts-, Steuer- und Terminangaben
+            werden nicht als aktueller Rechtsstand aufbereitet.
+          </p>
+
+          <p>
+            Die Lernfassung ergänzt Vorlesung, Literatur und Originalaufgaben.
+            Sie legt keinen verbindlichen Prüfungsumfang fest.
+          </p>
+
+          <button id="resetDone">Lernmarkierungen zurücksetzen</button>
+          <p id="resetStatus" role="status"></p>
+        </article>
+      `;
+    }
+
+    $("chapters").addEventListener("click", event => {
+      const button = event.target.closest("[data-chapter]");
+
+      if (button) {
+        const chapter = Number(button.dataset.chapter);
+        go(slides.findIndex(slide => slide.c === chapter));
+      }
+    });
+
+    document.querySelector(".tabs").addEventListener("click", event => {
+      const button = event.target.closest("[data-view]");
+
+      if (button) {
+        view = button.dataset.view;
+
+        $("searchResults").innerHTML = "";
+        $("search").value = "";
+
+        render();
+
+        document.body.classList.remove("menu-open");
+        $("menu").setAttribute("aria-expanded", "false");
+      }
+    });
+
+    $("screen").addEventListener("click", event => {
+      const button = event.target.closest("button");
+      if (!button) return;
+
+      if (button.id === "prev") go(state.index - 1);
+      if (button.id === "next") go(state.index + 1);
+
+      if (button.id === "done") {
+        state.done = state.done.includes(state.index)
+          ? state.done.filter(index => index !== state.index)
+          : [...state.done, state.index];
+
+        save();
+        render();
+        $("done").focus();
+      }
+
+      if (button.dataset.q !== undefined) {
+        const index = Number(button.dataset.q);
+
+        if (!Number.isInteger(state.answers[index])) {
+          state.answers[index] = Number(button.dataset.a);
+          save();
+
+          const scrollPosition = window.scrollY;
+          renderQuiz();
+          window.scrollTo(0, scrollPosition);
+        }
+      }
+
+      if (button.id === "resetQuiz") {
+        state.answers = {};
+        save();
+        renderQuiz();
+      }
+
+      if (button.id === "resetDone") {
+        state.done = [];
+        save();
+        progress();
+        $("resetStatus").textContent = "Lernmarkierungen zurückgesetzt.";
+      }
+    });
+
+    $("screen").addEventListener("change", event => {
+      if (event.target.id === "quizFilter") {
+        filter = Number(event.target.value);
+        renderQuiz();
+      }
+    });
+
+    $("screen").addEventListener("input", event => {
+      if (view === "calc" && event.target.matches("input")) {
+        calculate();
+      }
+    });
+
+    $("search").addEventListener("input", event => {
+      const term = event.target.value.trim().toLocaleLowerCase("de");
+
+      if (!term) {
+        $("searchResults").innerHTML = "";
+        return;
+      }
+
+      const found = slides
+        .map((slide, index) => ({ slide, index }))
+        .filter(({ slide }) => [
+          slide.t,
+          slide.lead,
+          slide.example,
+          slide.tip,
+          ...slide.items.flat()
+        ].join(" ").toLocaleLowerCase("de").includes(term));
+
+      $("searchResults").innerHTML = `
+        <p class="small">${found.length} Treffer</p>
+
+        ${found.map(({ slide, index }) => `
+          <button data-result="${index}">
+            <b>${esc(slide.t)}</b><br>
+            <small>
+              ${esc(chapters[slide.c])} · Folie ${index + 1}
+            </small>
+          </button>
+        `).join("")}
+      `;
+    });
+
+    $("searchResults").addEventListener("click", event => {
+      const button = event.target.closest("[data-result]");
+      if (button) go(Number(button.dataset.result));
+    });
+
+    $("menu").addEventListener("click", () => {
+      const open = document.body.classList.toggle("menu-open");
+      $("menu").setAttribute("aria-expanded", open);
+    });
+
+    document.addEventListener("keydown", event => {
+      if (
+        view !== "slides" ||
+        event.ctrlKey ||
+        event.metaKey ||
+        event.altKey ||
+        /INPUT|SELECT|TEXTAREA|BUTTON|SUMMARY/.test(event.target.tagName) ||
+        event.target.isContentEditable
+      ) {
+        return;
+      }
+
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        go(state.index + 1);
+      }
+
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        go(state.index - 1);
+      }
+    });
+
+    function printBuild() {
+      $("printCopy").innerHTML = slides
+        .map((slide, index) => article(slide, index, true))
+        .join("");
+
+      $("printCopy").querySelectorAll("details").forEach(details => {
+        details.open = true;
+      });
+    }
+
+    $("print").addEventListener("click", () => {
+      printBuild();
+      window.print();
+    });
+
+    window.addEventListener("beforeprint", printBuild);
+
+    save();
+    render();
+  </script>
+</body>
+</html>
